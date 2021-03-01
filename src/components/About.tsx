@@ -12,7 +12,9 @@ const About = ({
   if (visible === true) {
     return (
       <div id="aboutBox">
-        <h5>About</h5>
+        <button type="button" id="closeAbout" onClick={setAbout}>
+          X
+        </button>
         <p>
           Made by{' '}
           <a href="https://github.com/Mike-Mp" target="_blank" rel="noreferrer">
@@ -20,9 +22,6 @@ const About = ({
           </a>{' '}
           with Electron, React and the youtube-dl npm package.
         </p>
-        <button type="button" id="closeAbout" onClick={setAbout}>
-          X
-        </button>
       </div>
     );
   }
