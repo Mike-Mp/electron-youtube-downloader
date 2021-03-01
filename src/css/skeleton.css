@@ -186,8 +186,10 @@ body {
   font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
   line-height: 1.6;
   font-weight: 400;
-  font-family: 'Raleway', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial,
-    sans-serif;
+  /* font-family: 'Raleway', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, */
+  /* sans-serif; */
+  /* font-family: 'DotGothic16', sans-serif; */
+  font-family: 'Roboto Condensed', sans-serif;
   color: #222;
 }
 
@@ -270,7 +272,6 @@ a:hover {
 /* Buttons
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .button,
-.menuItem,
 button,
 input[type='submit'],
 input[type='reset'],

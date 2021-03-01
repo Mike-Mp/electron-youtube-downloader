@@ -15,7 +15,9 @@ const Header = () => {
       <h1 id="appTitle">Mike-Mp's youtube downloader</h1>
       <ul className="menuList">
         <li className="menuItem">
-          <Link to="/">Index</Link>
+          <Link to="/" className="link">
+            Index
+          </Link>
         </li>
         <li className="menuItem">
           <button type="button" onClick={setAboutFunction}>
