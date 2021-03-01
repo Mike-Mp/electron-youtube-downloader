@@ -7,7 +7,6 @@ import './App.global.css';
 
 import Header from './components/Header';
 import Index from './pages/Index';
-import About from './pages/About';
 
 export default function App() {
   return (
@@ -15,7 +14,6 @@ export default function App() {
       <Header />
       <Switch>
         <Route path="/" exact component={Index} />
-        <Route path="/about" component={About} />
       </Switch>
     </Router>
   );

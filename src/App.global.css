@@ -9,22 +9,40 @@ body {
 
 header {
   border: dashed #222 1px;
+  padding-left: 15px;
   margin: 10px;
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
 }
 
 #appTitle {
   font-size: 2.6rem;
-  padding-right: 10px;
+  /* padding-right: 10px; */
   border-right: solid #222 1px;
   margin-right: 20px;
+  width: 50%;
 }
 
 .menuList {
+  width: 50%;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  transform: translateY();
+  justify-content: flex-start;
+}
+
+.menuItem {
+  transform: translateY(50%);
+  margin-right: 10px;
+}
+
+#aboutBox {
+  border: dashed black 1px;
+  padding: 0 20px;
+  background-color: gray;
+  color: white;
+  position: absolute;
+  top: 10%;
+  left: 50%;
 }
