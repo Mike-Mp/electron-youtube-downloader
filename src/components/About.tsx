@@ -22,6 +22,15 @@ const About = ({
           </a>{' '}
           with Electron, React and the youtube-dl npm package.
         </p>
+        <p>
+          <a
+            href="https://github.com/Mike-Mp/electron-youtube-downloader"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Github page
+          </a>
+        </p>
       </div>
     );
   }

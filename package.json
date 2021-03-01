@@ -1,7 +1,7 @@
 {
-  "name": "electron-react-boilerplate",
+  "name": "mike-mps-youtube-downloader",
   "productName": "ElectronReact",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Fast Refresh for rapid application development",
+  "description": "Electron application based on React, React Router, Webpack and youtube-dl",
   "scripts": {
     "build": "concurrently \"yarn build:main\" \"yarn build:renderer\"",
     "build:main": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.main.prod.babel.js",
