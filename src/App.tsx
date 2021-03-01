@@ -1,24 +1,21 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import icon from '../assets/icon.svg';
-import './App.global.css';
 import './css/normalize.css';
+import './css/skeleton.css';
+import './App.global.css';
 
-const Hello = () => {
-  return (
-    <div>
-      <div>
-        <h1>Mike-Mp's youtube downloader</h1>
-      </div>
-    </div>
-  );
-};
+import Header from './components/Header';
+import Index from './pages/Index';
+import About from './pages/About';
 
 export default function App() {
   return (
     <Router>
+      <Header />
       <Switch>
-        <Route path="/" component={Hello} />
+        <Route path="/" exact component={Index} />
+        <Route path="/about" component={About} />
       </Switch>
     </Router>
   );

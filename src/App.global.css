@@ -2,3 +2,29 @@
  * @NOTE: Prepend a `~` to css file paths that are in your node_modules
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
+
+body {
+  background-color: white;
+}
+
+header {
+  border: dashed #222 1px;
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#appTitle {
+  font-size: 2.6rem;
+  padding-right: 10px;
+  border-right: solid #222 1px;
+  margin-right: 20px;
+}
+
+.menuList {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  transform: translateY();
+}
