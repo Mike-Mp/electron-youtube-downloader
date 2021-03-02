@@ -35,72 +35,61 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 exports.__esModule = true;
 exports.getVideoFormats = exports.validateVideoURL = exports.getVideoDetails = void 0;
-var ytdl_core_1 = __importDefault(require("ytdl-core"));
-var fs = require('fs');
+// import ytdl from 'ytdl-core';
+var ytdl = require("ytdl-core");
 // TypeScript: import ytdl from 'ytdl-core'; with --esModuleInterop
 // TypeScript: import * as ytdl from 'ytdl-core'; with --allowSyntheticDefaultImports
 // TypeScript: import ytdl = require('ytdl-core'); with neither of the above
-// ytdl('http://www.youtube.com/watch?v=aqz-KE-bpKQ').pipe(
-//   fs.createWriteStream('video.mp4')
-// );
 var getVideoDetails = function (url) { return __awaiter(void 0, void 0, void 0, function () {
-    var info, details;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, ytdl_core_1["default"].getInfo(url)];
-            case 1:
-                info = _a.sent();
-                details = info.videoDetails;
-                return [2 /*return*/, details];
-        }
-    });
-}); };
-exports.getVideoDetails = getVideoDetails;
-var url11 = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
-var validateVideoURL = function (url) { return __awaiter(void 0, void 0, void 0, function () {
-    var validation, details, videoTitle, videoDescription, videoLengthInSeconds, _a, videoDateObject, timeString;
+    var info, details, videoTitle, videoDescription, videoLengthInSeconds, _a, videoDateObject, timeString;
     return __generator(this, function (_b) {
         switch (_b.label) {
-            case 0: return [4 /*yield*/, ytdl_core_1["default"].validateURL(url)];
+            case 0:
+                if (!ytdl.validateURL(url))
+                    return [2 /*return*/, false];
+                return [4 /*yield*/, ytdl.getInfo(url)];
             case 1:
-                validation = _b.sent();
-                details = exports.getVideoDetails(url);
+                info = _b.sent();
+                details = info.videoDetails;
                 _a = parseInt;
                 return [4 /*yield*/, details];
             case 2:
                 videoLengthInSeconds = _a.apply(void 0, [(_b.sent()).lengthSeconds, 10]);
                 videoDateObject = new Date(videoLengthInSeconds * 1000);
                 timeString = videoDateObject.toISOString().substr(11, 8);
-                console.log(timeString);
-                return [2 /*return*/];
+                return [2 /*return*/, details];
         }
     });
 }); };
+exports.getVideoDetails = getVideoDetails;
+// const url11 = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
+var validateVideoURL = function (url) {
+    var validation = ytdl.validateURL(url);
+    return validation;
+};
 exports.validateVideoURL = validateVideoURL;
 var getVideoFormats = function (url) { return __awaiter(void 0, void 0, void 0, function () {
-    var info, format;
+    var info, format, resolvedFormat;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, ytdl_core_1["default"].getInfo(url)];
+            case 0: return [4 /*yield*/, ytdl.getInfo(url)];
             case 1:
                 info = _a.sent();
-                format = ytdl_core_1["default"].filterFormats(info.formats, 'videoandaudio');
-                console.log(format);
-                return [2 /*return*/, format];
+                format = ytdl.filterFormats(info.formats, 'video');
+                resolvedFormat = Promise.resolve(format)
+                    .then(function (res) { return res; })["catch"](function (err) {
+                    var errObj = [err];
+                    return errObj;
+                });
+                return [2 /*return*/, resolvedFormat];
         }
     });
 }); };
 exports.getVideoFormats = getVideoFormats;
-console.log(exports.getVideoFormats('http://www.youtube.com/watch?v=aqz-KE-bpKQ'));
 exports["default"] = {
     getVideoFormats: exports.getVideoFormats,
     getVideoDetails: exports.getVideoDetails,
     validateVideoURL: exports.validateVideoURL
 };
-// const info = ytdl.getInfo(url).then((res) => res);
-// console.log(info);

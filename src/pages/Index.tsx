@@ -3,7 +3,6 @@ import { videoFormat } from 'ytdl-core';
 import {
   getVideoFormats,
   getVideoDetails,
-  validateVideoURL,
 } from '../ytdl_functions/videoDataFunctions';
 
 interface IndexProps {
@@ -24,15 +23,17 @@ const Index = () => {
 
   let optionSection;
 
-  if (qualityData.length > 0) {
-    optionSection = qualityData.map(
-      (format: {
-        itag: string | number | null | undefined;
-        qualityLabel: string;
-      }) => {
-        return <option key={format.itag}>{`${format.qualityLabel}`}</option>;
-      }
-    );
+  console.log('videoURL', videoURL);
+  console.log('qualityData: ', qualityData);
+
+  if (qualityData && qualityData.length > 0 && qualityData.length !== 1) {
+    optionSection = qualityData.map((format) => {
+      return (
+        <option
+          key={format.itag}
+        >{`${format.qualityLabel} ${format.container} ${format.fps}FPS`}</option>
+      );
+    });
   } else {
     optionSection = <option disabled>Get data first</option>;
   }
