@@ -1,6 +1,12 @@
 import React from 'react';
+import {} from '../ytdl_functions/testing';
 
 const Index = () => {
+  const [videoURL, setVideoURL] = React.useState('');
+  const [qualityData, setQualityData] = React.useState([]);
+
+  const getQualityData = (vidUrl) => {};
+
   return (
     <div className="mainPage">
       <div className="downloadBox">
@@ -8,10 +14,18 @@ const Index = () => {
         <form>
           <label htmlFor="url">
             Enter video URL
-            <input type="text" name="url" id="url" />
+            <input
+              type="text"
+              name="url"
+              id="url"
+              onChange={(e) => setVideoURL(e.target.value)}
+            />
           </label>
-          <fieldset id="custom">
+          <fieldset id="vidSelector">
             <legend>Video Quality</legend>
+            <button type="button" onClick={}>
+              Get available quality formats for the video
+            </button>
             <select
               name="vidQuality"
               id="vidQuality"

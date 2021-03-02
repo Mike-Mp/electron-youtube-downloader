@@ -47,7 +47,40 @@ var fs = require('fs');
 // ytdl('http://www.youtube.com/watch?v=aqz-KE-bpKQ').pipe(
 //   fs.createWriteStream('video.mp4')
 // );
-var tryInfo = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+var getVideoDetails = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+    var info, details;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, ytdl_core_1["default"].getInfo(url)];
+            case 1:
+                info = _a.sent();
+                details = info.videoDetails;
+                return [2 /*return*/, details];
+        }
+    });
+}); };
+var url11 = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
+var validateVideoURL = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+    var validation, details, videoTitle, videoDescription, videoLengthInSeconds, _a, videoDateObject, timeString;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0: return [4 /*yield*/, ytdl_core_1["default"].validateURL(url)];
+            case 1:
+                validation = _b.sent();
+                details = getVideoDetails(url);
+                _a = parseInt;
+                return [4 /*yield*/, details];
+            case 2:
+                videoLengthInSeconds = _a.apply(void 0, [(_b.sent()).lengthSeconds, 10]);
+                videoDateObject = new Date(videoLengthInSeconds * 1000);
+                timeString = videoDateObject.toISOString().substr(11, 8);
+                console.log(timeString);
+                return [2 /*return*/];
+        }
+    });
+}); };
+validateVideoURL(url11);
+var getVideoFormats = function (url) { return __awaiter(void 0, void 0, void 0, function () {
     var info, format;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -55,9 +88,14 @@ var tryInfo = function (url) { return __awaiter(void 0, void 0, void 0, function
             case 1:
                 info = _a.sent();
                 format = ytdl_core_1["default"].filterFormats(info.formats, 'videoandaudio');
-                console.log('Format found!', format);
-                return [2 /*return*/];
+                return [2 /*return*/, format];
         }
     });
 }); };
-tryInfo('http://www.youtube.com/watch?v=aqz-KE-bpKQ');
+exports["default"] = {
+    getVideoFormats: getVideoFormats,
+    getVideoDetails: getVideoDetails,
+    validateVideoURL: validateVideoURL
+};
+// const info = ytdl.getInfo(url).then((res) => res);
+// console.log(info);
