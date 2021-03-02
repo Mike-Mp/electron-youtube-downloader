@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Info = () => {
+const Instructions = () => {
   return (
     <div className="top">
       <h2>Info</h2>
@@ -16,4 +16,4 @@ const Info = () => {
   );
 };
 
-export default Info;
+export default Instructions;

@@ -7,8 +7,6 @@ const Header = () => {
 
   const setAboutFunction = () => setAboutBox(!aboutBox);
 
-  console.log(aboutBox);
-
   return (
     <header>
       <About visible={aboutBox} setAbout={setAboutFunction} />
@@ -20,7 +18,7 @@ const Header = () => {
           </Link>
         </li>
         <li className="menuItem">
-          <Link to="/info" className="link">
+          <Link to="/instructions" className="link">
             Info
           </Link>
         </li>
