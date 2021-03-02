@@ -96,3 +96,27 @@ header {
   cursor: pointer;
   box-sizing: border-box;
 }
+
+.mainPage {
+  width: 50%;
+  text-align: center;
+  margin: 0 auto;
+  height: 80%;
+  /* border: solid #bab0c9 1px; */
+  color: white;
+  /* background-color: #dfdbe5; */
+  /* background-image: url('./images/topography.svg'); */
+}
+
+.mainPage h2,
+p {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.mainPage h2 {
+  width: 20%;
+}
+
+.mainPage p {
+  font-size: 2.6rem;
+}
