@@ -3,12 +3,14 @@ import React from 'react';
 const Index = () => {
   return (
     <div className="mainPage">
-      <div className="top">
-        <h2>Info</h2>
-        <p>
-          By default, the best quality options are chosen for video download.
-          Click on "Defaults" to alter your default settings.
-        </p>
+      <div className="downloadBox">
+        <h3>Downloader</h3>
+        <form>
+          <label htmlFor="url">
+            Enter video URL
+            <input type="text" name="url" id="url" />
+          </label>
+        </form>
       </div>
     </div>
   );

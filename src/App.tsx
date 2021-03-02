@@ -6,6 +6,7 @@ import './App.global.css';
 
 import Header from './components/Header';
 import Index from './pages/Index';
+import Info from './pages/Info';
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       <Header />
       <Switch>
         <Route path="/" exact component={Index} />
+        <Route path="/info" exact component={Info} />
       </Switch>
     </Router>
   );

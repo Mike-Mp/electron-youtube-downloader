@@ -20,6 +20,11 @@ const Header = () => {
           </Link>
         </li>
         <li className="menuItem">
+          <Link to="/info" className="link">
+            Info
+          </Link>
+        </li>
+        <li className="menuItem">
           <Link to="/defaults" className="link">
             Defaults
           </Link>

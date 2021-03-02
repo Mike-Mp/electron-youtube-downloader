@@ -46,7 +46,7 @@ header {
   padding: 0 20px;
   color: rgb(255, 255, 255);
   position: absolute;
-  top: 9%;
+  top: 7%;
   left: 10%;
   width: 80%;
   height: 20%;
@@ -97,7 +97,7 @@ header {
   box-sizing: border-box;
 }
 
-.mainPage {
+.top {
   width: 50%;
   text-align: center;
   margin: 0 auto;
@@ -108,15 +108,21 @@ header {
   /* background-image: url('./images/topography.svg'); */
 }
 
-.mainPage h2,
+.top h2,
 p {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
 }
 
-.mainPage h2 {
+.top h2 {
   width: 20%;
 }
 
-.mainPage p {
+.top p {
   font-size: 2.6rem;
+}
+
+.downloadBox {
+  padding-left: 15px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.4);
 }
