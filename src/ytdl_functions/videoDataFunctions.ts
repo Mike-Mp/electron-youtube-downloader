@@ -31,6 +31,7 @@ export const validateVideoURL = (url: string) => {
 };
 
 export const getVideoFormats = async (url: string) => {
+  if (!validateVideoURL(url)) return [{ msg: 'Error: Invalid video URL' }];
   const info = await ytdl.getInfo(url);
   const format = ytdl.filterFormats(info.formats, 'video');
 

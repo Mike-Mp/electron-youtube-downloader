@@ -74,7 +74,10 @@ var getVideoFormats = function (url) { return __awaiter(void 0, void 0, void 0, 
     var info, format, resolvedFormat;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, ytdl.getInfo(url)];
+            case 0:
+                if (!exports.validateVideoURL(url))
+                    return [2 /*return*/, [{ err: 'Invalid video URL' }]];
+                return [4 /*yield*/, ytdl.getInfo(url)];
             case 1:
                 info = _a.sent();
                 format = ytdl.filterFormats(info.formats, 'video');
@@ -90,6 +93,5 @@ var getVideoFormats = function (url) { return __awaiter(void 0, void 0, void 0, 
 exports.getVideoFormats = getVideoFormats;
 exports["default"] = {
     getVideoFormats: exports.getVideoFormats,
-    getVideoDetails: exports.getVideoDetails,
-    validateVideoURL: exports.validateVideoURL
+    getVideoDetails: exports.getVideoDetails
 };

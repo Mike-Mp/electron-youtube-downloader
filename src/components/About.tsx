@@ -18,9 +18,9 @@ const About = ({
         <p>
           Made by{' '}
           <a href="https://github.com/Mike-Mp" target="_blank" rel="noreferrer">
-            Mike-Mp
-          </a>{' '}
-          with Electron, React and the youtube-dl npm package.
+            Mike-Mp{' '}
+          </a>
+          with Electron, React and the node-ytdl-core npm package.
         </p>
         <p>
           <a
