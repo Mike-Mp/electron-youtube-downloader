@@ -1,4 +1,5 @@
-import ytdl from 'ytdl-core';
+// import ytdl from 'ytdl-core';
+import ytdl = require('ytdl-core');
 
 const fs = require('fs');
 // TypeScript: import ytdl from 'ytdl-core'; with --esModuleInterop
@@ -9,7 +10,7 @@ const fs = require('fs');
 //   fs.createWriteStream('video.mp4')
 // );
 
-const getVideoDetails = async (url: string) => {
+export const getVideoDetails = async (url: string) => {
   const info = await ytdl.getInfo(url);
   const details = info.videoDetails;
   return details;
@@ -17,7 +18,7 @@ const getVideoDetails = async (url: string) => {
 
 const url11 = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
 
-const validateVideoURL = async (url: string) => {
+export const validateVideoURL = async (url: string) => {
   const validation = await ytdl.validateURL(url);
   const details = getVideoDetails(url);
 
@@ -33,12 +34,20 @@ const validateVideoURL = async (url: string) => {
   console.log(timeString);
 };
 
-validateVideoURL(url11);
-
-const getVideoFormats = async (url: string) => {
+export const getVideoFormats = async (url: string) => {
   const info = await ytdl.getInfo(url);
   const format = ytdl.filterFormats(info.formats, 'videoandaudio');
-  return format;
+
+  const resolvedFormat = Promise.resolve(format)
+    .then((res) => res)
+    .catch((err) => {
+      const errObj = [err];
+      return errObj;
+    });
+
+  console.log(format);
+
+  return resolvedFormat;
 };
 
 export default {

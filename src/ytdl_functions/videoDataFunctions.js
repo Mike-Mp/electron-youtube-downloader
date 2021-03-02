@@ -39,6 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
+exports.getVideoFormats = exports.validateVideoURL = exports.getVideoDetails = void 0;
 var ytdl_core_1 = __importDefault(require("ytdl-core"));
 var fs = require('fs');
 // TypeScript: import ytdl from 'ytdl-core'; with --esModuleInterop
@@ -59,6 +60,7 @@ var getVideoDetails = function (url) { return __awaiter(void 0, void 0, void 0, 
         }
     });
 }); };
+exports.getVideoDetails = getVideoDetails;
 var url11 = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
 var validateVideoURL = function (url) { return __awaiter(void 0, void 0, void 0, function () {
     var validation, details, videoTitle, videoDescription, videoLengthInSeconds, _a, videoDateObject, timeString;
@@ -67,7 +69,7 @@ var validateVideoURL = function (url) { return __awaiter(void 0, void 0, void 0,
             case 0: return [4 /*yield*/, ytdl_core_1["default"].validateURL(url)];
             case 1:
                 validation = _b.sent();
-                details = getVideoDetails(url);
+                details = exports.getVideoDetails(url);
                 _a = parseInt;
                 return [4 /*yield*/, details];
             case 2:
@@ -79,7 +81,7 @@ var validateVideoURL = function (url) { return __awaiter(void 0, void 0, void 0,
         }
     });
 }); };
-validateVideoURL(url11);
+exports.validateVideoURL = validateVideoURL;
 var getVideoFormats = function (url) { return __awaiter(void 0, void 0, void 0, function () {
     var info, format;
     return __generator(this, function (_a) {
@@ -88,14 +90,17 @@ var getVideoFormats = function (url) { return __awaiter(void 0, void 0, void 0, 
             case 1:
                 info = _a.sent();
                 format = ytdl_core_1["default"].filterFormats(info.formats, 'videoandaudio');
+                console.log(format);
                 return [2 /*return*/, format];
         }
     });
 }); };
+exports.getVideoFormats = getVideoFormats;
+console.log(exports.getVideoFormats('http://www.youtube.com/watch?v=aqz-KE-bpKQ'));
 exports["default"] = {
-    getVideoFormats: getVideoFormats,
-    getVideoDetails: getVideoDetails,
-    validateVideoURL: validateVideoURL
+    getVideoFormats: exports.getVideoFormats,
+    getVideoDetails: exports.getVideoDetails,
+    validateVideoURL: exports.validateVideoURL
 };
 // const info = ytdl.getInfo(url).then((res) => res);
 // console.log(info);

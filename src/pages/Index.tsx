@@ -1,11 +1,41 @@
 import React from 'react';
-import {} from '../ytdl_functions/testing';
+import { videoFormat } from 'ytdl-core';
+import {
+  getVideoFormats,
+  getVideoDetails,
+  validateVideoURL,
+} from '../ytdl_functions/videoDataFunctions';
+
+interface IndexProps {
+  videoURL: string;
+  qualityData: videoFormat[];
+}
 
 const Index = () => {
-  const [videoURL, setVideoURL] = React.useState('');
-  const [qualityData, setQualityData] = React.useState([]);
+  const [videoURL, setVideoURL] = React.useState<IndexProps['videoURL']>('');
+  const [qualityData, setQualityData] = React.useState<
+    IndexProps['qualityData']
+  >([]);
 
-  const getQualityData = (vidUrl) => {};
+  const getQualityData = async () => {
+    const data = await getVideoFormats(videoURL);
+    setQualityData(data);
+  };
+
+  let optionSection;
+
+  if (qualityData.length > 0) {
+    optionSection = qualityData.map(
+      (format: {
+        itag: string | number | null | undefined;
+        qualityLabel: string;
+      }) => {
+        return <option key={format.itag}>{`${format.qualityLabel}`}</option>;
+      }
+    );
+  } else {
+    optionSection = <option disabled>Get data first</option>;
+  }
 
   return (
     <div className="mainPage">
@@ -23,7 +53,7 @@ const Index = () => {
           </label>
           <fieldset id="vidSelector">
             <legend>Video Quality</legend>
-            <button type="button" onClick={}>
+            <button type="button" onClick={getQualityData}>
               Get available quality formats for the video
             </button>
             <select
@@ -32,10 +62,7 @@ const Index = () => {
               autoComplete="off"
               required
             >
-              <option>Carrots</option>
-              <option>Peas</option>
-              <option>Beans</option>
-              <option>Pneumonoultramicroscopicsilicovolcanoconiosis</option>
+              {optionSection}
             </select>
           </fieldset>
         </form>
