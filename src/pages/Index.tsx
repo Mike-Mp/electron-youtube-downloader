@@ -1,5 +1,4 @@
 import React from 'react';
-import { videoFormat } from 'ytdl-core';
 import {
   getVideoFormats,
   getVideoDetails,
@@ -8,21 +7,22 @@ import {
 import '../css/select_styling.css';
 import Form from '../components/Form';
 
-interface IndexProps {
-  videoURL: string;
-  qualityData: videoFormat[];
-  message: string;
-}
+import { IndexProps } from '../interfaces/interface';
 
 const Index = () => {
-  const [videoURL, setVideoURL] = React.useState<IndexProps['videoURL']>('');
+  const [videoURL, setVideoURL] = React.useState<string>('');
   const [qualityData, setQualityData] = React.useState<
     IndexProps['qualityData']
   >([]);
-  const [message, setMessage] = React.useState<IndexProps['message']>('');
+  const [message, setMessage] = React.useState<string>('');
   const [videoData, setVideoData] = React.useState({});
 
   const getQualityData = async () => {
+    if (videoURL.length === 0) {
+      setMessage('Error: Empty video URL');
+      setTimeout(() => setMessage(''), 8000);
+      return;
+    }
     const data = await getVideoFormats(videoURL);
     if (data[0].msg) {
       setMessage(data[0].msg);
@@ -42,6 +42,9 @@ const Index = () => {
           setVideoURL={setVideoURL}
           getQualityData={getQualityData}
           message={message}
+          setMessage={setMessage}
+          videoData={videoData}
+          setVideoData={setVideoData}
         />
       </div>
     </div>

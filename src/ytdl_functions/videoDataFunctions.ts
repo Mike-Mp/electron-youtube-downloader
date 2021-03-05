@@ -10,7 +10,7 @@ import ytdl = require('ytdl-core');
 export const getVideoDetails = async (url: string) => {
   if (!ytdl.validateURL(url)) return { msg: 'Error: Invalid video URL' };
 
-  const unresolvedInfo = await ytdl.getInfo(url);
+  const info = await ytdl.getInfo(url);
   // const info = Promise.resolve(unresolvedInfo)
   //   .then((res) => res)
   //   .catch((err) => {
@@ -21,20 +21,18 @@ export const getVideoDetails = async (url: string) => {
 
   // console.log(info);
 
-  return null;
+  const details = info.videoDetails;
 
-  const details = unresolvedInfo.videoDetails;
+  // const videoTitle = info.videoDetails.title;
+  // const videoDescription = info.videoDetails.description;
 
-  let videoTitle;
-  let videoDescription;
-
-  const videoLengthInSeconds = parseInt((await details).lengthSeconds, 10);
+  const videoLengthInSeconds = parseInt(details.lengthSeconds, 10);
 
   const videoDateObject = new Date(videoLengthInSeconds * 1000);
 
   const timeString = videoDateObject.toISOString().substr(11, 8);
 
-  return { videoTitle, videoDescription, timeString };
+  return { details, timeString };
 };
 
 export const validateVideoURL = (url: string) => {

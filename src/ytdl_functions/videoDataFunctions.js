@@ -42,29 +42,26 @@ var ytdl = require("ytdl-core");
 // TypeScript: import ytdl from 'ytdl-core'; with --esModuleInterop
 // TypeScript: import * as ytdl from 'ytdl-core'; with --allowSyntheticDefaultImports
 // TypeScript: import ytdl = require('ytdl-core'); with neither of the above
+// const url11 = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
 var getVideoDetails = function (url) { return __awaiter(void 0, void 0, void 0, function () {
-    var info, details, videoTitle, videoDescription, videoLengthInSeconds, _a, videoDateObject, timeString;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var info, details, videoLengthInSeconds, videoDateObject, timeString;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
                 if (!ytdl.validateURL(url))
-                    return [2 /*return*/, false];
+                    return [2 /*return*/, { msg: 'Error: Invalid video URL' }];
                 return [4 /*yield*/, ytdl.getInfo(url)];
             case 1:
-                info = _b.sent();
+                info = _a.sent();
                 details = info.videoDetails;
-                _a = parseInt;
-                return [4 /*yield*/, details];
-            case 2:
-                videoLengthInSeconds = _a.apply(void 0, [(_b.sent()).lengthSeconds, 10]);
+                videoLengthInSeconds = parseInt(details.lengthSeconds, 10);
                 videoDateObject = new Date(videoLengthInSeconds * 1000);
                 timeString = videoDateObject.toISOString().substr(11, 8);
-                return [2 /*return*/, details];
+                return [2 /*return*/, { details: details, timeString: timeString }];
         }
     });
 }); };
 exports.getVideoDetails = getVideoDetails;
-// const url11 = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
 var validateVideoURL = function (url) {
     var validation = ytdl.validateURL(url);
     return validation;
@@ -92,7 +89,3 @@ var getVideoFormats = function (url) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 exports.getVideoFormats = getVideoFormats;
-exports["default"] = {
-    getVideoFormats: exports.getVideoFormats,
-    getVideoDetails: exports.getVideoDetails
-};
