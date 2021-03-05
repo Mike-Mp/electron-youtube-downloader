@@ -5,11 +5,25 @@ import ytdl = require('ytdl-core');
 // TypeScript: import * as ytdl from 'ytdl-core'; with --allowSyntheticDefaultImports
 // TypeScript: import ytdl = require('ytdl-core'); with neither of the above
 
+// const url11 = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
+
 export const getVideoDetails = async (url: string) => {
   if (!ytdl.validateURL(url)) return { msg: 'Error: Invalid video URL' };
 
-  const info = await ytdl.getInfo(url);
-  const details = info.videoDetails;
+  const unresolvedInfo = await ytdl.getInfo(url);
+  // const info = Promise.resolve(unresolvedInfo)
+  //   .then((res) => res)
+  //   .catch((err) => {
+  //     const errObj = [err];
+  //     console.log('braaaap');
+  //     return errObj;
+  //   });
+
+  // console.log(info);
+
+  return null;
+
+  const details = unresolvedInfo.videoDetails;
 
   let videoTitle;
   let videoDescription;
@@ -22,8 +36,6 @@ export const getVideoDetails = async (url: string) => {
 
   return { videoTitle, videoDescription, timeString };
 };
-
-// const url11 = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
 
 export const validateVideoURL = (url: string) => {
   const validation = ytdl.validateURL(url);
@@ -44,9 +56,4 @@ export const getVideoFormats = async (url: string) => {
     });
 
   return resolvedFormat;
-};
-
-export default {
-  getVideoFormats,
-  getVideoDetails,
 };

@@ -6,7 +6,6 @@ import {
 } from '../ytdl_functions/videoDataFunctions';
 
 import '../css/select_styling.css';
-import MsgBox from '../components/MsgBox';
 import Form from '../components/Form';
 
 interface IndexProps {
@@ -35,13 +34,14 @@ const Index = () => {
 
   return (
     <div className="mainPage">
-      <MsgBox message={message} />
       <div className="downloadBox">
         <h3>Downloader</h3>
         <Form
           qualityData={qualityData}
+          videoURL={videoURL}
           setVideoURL={setVideoURL}
           getQualityData={getQualityData}
+          message={message}
         />
       </div>
     </div>

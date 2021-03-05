@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 
 const MsgBox = ({ message }: { message: string }): ReactElement | null => {
-  console.log(`MSGBOX: ${message}`);
   if (message.length > 0) {
     let typeOfMessage;
     if (message.includes('Error:')) {
