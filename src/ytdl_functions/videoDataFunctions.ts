@@ -6,7 +6,7 @@ import ytdl = require('ytdl-core');
 // TypeScript: import ytdl = require('ytdl-core'); with neither of the above
 
 export const getVideoDetails = async (url: string) => {
-  if (!ytdl.validateURL(url)) return false;
+  if (!ytdl.validateURL(url)) return [{ msg: 'Error: Invalid video URL' }];
 
   const info = await ytdl.getInfo(url);
   const details = info.videoDetails;
@@ -39,6 +39,7 @@ export const getVideoFormats = async (url: string) => {
     .then((res) => res)
     .catch((err) => {
       const errObj = [err];
+      console.log('braaaap');
       return errObj;
     });
 

@@ -76,7 +76,7 @@ var getVideoFormats = function (url) { return __awaiter(void 0, void 0, void 0, 
         switch (_a.label) {
             case 0:
                 if (!exports.validateVideoURL(url))
-                    return [2 /*return*/, [{ err: 'Invalid video URL' }]];
+                    return [2 /*return*/, [{ msg: 'Error: Invalid video URL' }]];
                 return [4 /*yield*/, ytdl.getInfo(url)];
             case 1:
                 info = _a.sent();
@@ -84,6 +84,7 @@ var getVideoFormats = function (url) { return __awaiter(void 0, void 0, void 0, 
                 resolvedFormat = Promise.resolve(format)
                     .then(function (res) { return res; })["catch"](function (err) {
                     var errObj = [err];
+                    console.log('braaaap');
                     return errObj;
                 });
                 return [2 /*return*/, resolvedFormat];

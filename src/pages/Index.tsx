@@ -6,6 +6,7 @@ import {
 } from '../ytdl_functions/videoDataFunctions';
 
 import '../css/select_styling.css';
+import MsgBox from '../components/MsgBox';
 
 interface IndexProps {
   videoURL: string;
@@ -20,13 +21,15 @@ const Index = () => {
   >([]);
   const [message, setMessage] = React.useState<IndexProps['message']>('');
 
-  console.log(qualityData);
-  console.log(message);
+  console.log('MESSAGE', message);
 
   const getQualityData = async () => {
     const data = await getVideoFormats(videoURL);
+    console.log(data[0]);
     if (data[0].msg) {
+      console.log('data', data[0].msg);
       setMessage(data[0].msg);
+      setTimeout(() => setMessage(''), 8000);
       return;
     }
     setQualityData(data);
@@ -35,30 +38,26 @@ const Index = () => {
   let optionSection;
 
   if (qualityData && qualityData.length > 0 && qualityData.length !== 1) {
-    optionSection = qualityData.map((format, i) => {
+    optionSection = qualityData.map((format) => {
       return (
         <option
           key={format.itag}
-          selected={i === 0}
           value={format.itag}
         >{`${format.qualityLabel} ${format.container} ${format.fps}FPS`}</option>
       );
     });
   } else {
-    optionSection = (
-      <option disabled selected>
-        Get data first
-      </option>
-    );
+    optionSection = <option disabled>Get data first</option>;
   }
 
   return (
     <div className="mainPage">
+      <MsgBox message={message} />
       <div className="downloadBox">
         <h3>Downloader</h3>
-        <div className={message.includes('Error:') ? 'errorBox' : 'infoBox'}>
+        {/* <div className={message.includes('Error:') ? 'errorBox' : 'infoBox'}>
           <h5 id="messageText">{message}</h5>
-        </div>
+        </div> */}
         <form>
           <label htmlFor="url" id="urlLabel">
             Enter video URL
