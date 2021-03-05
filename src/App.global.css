@@ -103,10 +103,10 @@ header {
   text-align: center;
   margin: 0 auto;
   height: 80%;
-  /* border: solid #bab0c9 1px; */
+  border: solid #bab0c9 1px;
   color: white;
-  /* background-color: #dfdbe5; */
-  /* background-image: url('./images/topography.svg'); */
+  background-color: #dfdbe5;
+  background-image: url('./images/topography.svg');
 }
 
 .top h2,
@@ -147,22 +147,60 @@ form button:hover {
 }
 
 #urlLabel {
-  position: relative;
-  top: 30%;
-  left: 35%;
+  /* position: relative;
+  top: -30%;
+  left: 35%; */
   font-size: 2.3rem;
 }
 
 #url {
-  width: 30%;
-  position: relative;
-  top: 30%;
-  left: 35%;
+  width: 50%;
+  /* position: relative;
+  top: -30%;
+  left: 35%; */
 }
 
-#validateURL {
-  position: relative;
-  left: 36%;
+#getDetails {
+  margin-left: 10px;
+  /* position: relative;
+  top: -31%;
+  left: 36%; */
+}
+
+.topSection {
+  display: flex;
+  flex-direction: row;
+}
+
+.inputSubsection {
+  width: 50%;
+}
+
+.detailsBox {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+}
+
+.imgSection {
+  margin-right: 10px;
+}
+
+.imgSection img {
+  border: 5px solid black;
+}
+
+.detailsSection h3 {
+  text-decoration: underline;
+  margin-bottom: 20px;
+}
+
+.detailsSection h4 {
+  margin-bottom: 50px;
+}
+
+.descriptionBox {
+  /* width: 80%; */
 }
 
 /* MESSAGE BOX */
@@ -187,15 +225,4 @@ form button:hover {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
-.detailsBox {
-  display: flex;
-  flex-direction: row;
-}
-
-.imgSection {
-  margin-right: 10px;
-}
-
-.imgSection img {
-  border: 5px solid black;
-}
+/* END MESSAGE BOX */

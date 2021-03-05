@@ -25,7 +25,7 @@ const Form = ({
   videoData: IndexProps['videoData'];
   setVideoData: IndexProps['setVideoData'];
 }) => {
-  const validateURL = async () => {
+  const getDetails = async () => {
     if (videoURL.length === 0) {
       setMessage('Info: Empty video URL');
       setTimeout(() => setMessage(''), 8000);
@@ -61,19 +61,23 @@ const Form = ({
   return (
     <form>
       <MsgBox message={message} />
-      <label htmlFor="url" id="urlLabel">
-        Enter video URL
-      </label>
-      <input
-        type="text"
-        name="url"
-        id="url"
-        onChange={(e) => setVideoURL(e.target.value)}
-      />
-      <button type="button" id="validateURL" onClick={validateURL}>
-        VALIDATE
-      </button>
-      <VideoDetails videoData={videoData} />
+      <div className="topSection">
+        <div className="inputSubsection">
+          <label htmlFor="url" id="urlLabel">
+            Enter video URL
+          </label>
+          <input
+            type="text"
+            name="url"
+            id="url"
+            onChange={(e) => setVideoURL(e.target.value)}
+          />
+          <button type="button" id="getDetails" onClick={getDetails}>
+            Get video details
+          </button>
+        </div>
+        <VideoDetails videoData={videoData} />
+      </div>
       <fieldset id="vidSelector">
         <legend>Video Quality</legend>
         <button type="button" onClick={getQualityData}>

@@ -21,7 +21,6 @@ const VideoDetails = ({
         <div className="detailsSection">
           <h3>{title}</h3>
           <h4>Duration [{timeString}]</h4>
-          <button type="button">Show description</button>
           <Description description={description} />
         </div>
       </div>

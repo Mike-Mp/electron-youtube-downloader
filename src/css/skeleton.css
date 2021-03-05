@@ -202,6 +202,8 @@ h4,
 h5,
 h6 {
   font-weight: 300;
+  margin: 0;
+  padding: 0;
 }
 h1 {
   font-size: 4rem;
