@@ -6,7 +6,7 @@ import ytdl = require('ytdl-core');
 // TypeScript: import ytdl = require('ytdl-core'); with neither of the above
 
 export const getVideoDetails = async (url: string) => {
-  if (!ytdl.validateURL(url)) return [{ msg: 'Error: Invalid video URL' }];
+  if (!ytdl.validateURL(url)) return { msg: 'Error: Invalid video URL' };
 
   const info = await ytdl.getInfo(url);
   const details = info.videoDetails;
@@ -20,7 +20,7 @@ export const getVideoDetails = async (url: string) => {
 
   const timeString = videoDateObject.toISOString().substr(11, 8);
 
-  return details;
+  return { videoTitle, videoDescription, timeString };
 };
 
 // const url11 = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
