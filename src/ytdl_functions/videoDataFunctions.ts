@@ -11,20 +11,8 @@ export const getVideoDetails = async (url: string) => {
   if (!ytdl.validateURL(url)) return { msg: 'Error: Invalid video URL' };
 
   const info = await ytdl.getInfo(url);
-  // const info = Promise.resolve(unresolvedInfo)
-  //   .then((res) => res)
-  //   .catch((err) => {
-  //     const errObj = [err];
-  //     console.log('braaaap');
-  //     return errObj;
-  //   });
-
-  // console.log(info);
 
   const details = info.videoDetails;
-
-  // const videoTitle = info.videoDetails.title;
-  // const videoDescription = info.videoDetails.description;
 
   const videoLengthInSeconds = parseInt(details.lengthSeconds, 10);
 

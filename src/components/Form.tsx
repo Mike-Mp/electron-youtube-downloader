@@ -2,6 +2,7 @@ import React from 'react';
 import { getVideoDetails } from '../ytdl_functions/videoDataFunctions';
 
 import MsgBox from './MsgBox';
+import VideoDetails from './VideoDetails';
 
 import { IndexProps } from '../interfaces/interface';
 
@@ -26,14 +27,21 @@ const Form = ({
 }) => {
   const validateURL = async () => {
     if (videoURL.length === 0) {
-      setMessage('Error: Empty video URL');
+      setMessage('Info: Empty video URL');
       setTimeout(() => setMessage(''), 8000);
       return;
     }
 
     const details = await getVideoDetails(videoURL);
 
+    if (details?.msg) {
+      setMessage('Error: Invalid video URL');
+      setTimeout(() => setMessage(''), 8000);
+      return;
+    }
+
     console.log(details);
+    setVideoData(details);
   };
 
   let optionSection;
@@ -65,6 +73,7 @@ const Form = ({
       <button type="button" id="validateURL" onClick={validateURL}>
         VALIDATE
       </button>
+      <VideoDetails videoData={videoData} />
       <fieldset id="vidSelector">
         <legend>Video Quality</legend>
         <button type="button" onClick={getQualityData}>

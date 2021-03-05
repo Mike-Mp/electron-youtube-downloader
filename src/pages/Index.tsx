@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  getVideoFormats,
-  getVideoDetails,
-} from '../ytdl_functions/videoDataFunctions';
+import { getVideoFormats } from '../ytdl_functions/videoDataFunctions';
 
 import '../css/select_styling.css';
 import Form from '../components/Form';
@@ -15,11 +12,13 @@ const Index = () => {
     IndexProps['qualityData']
   >([]);
   const [message, setMessage] = React.useState<string>('');
-  const [videoData, setVideoData] = React.useState({});
+  const [videoData, setVideoData] = React.useState<IndexProps['videoData']>({
+    msg: '',
+  });
 
   const getQualityData = async () => {
     if (videoURL.length === 0) {
-      setMessage('Error: Empty video URL');
+      setMessage('Info: Empty video URL');
       setTimeout(() => setMessage(''), 8000);
       return;
     }
