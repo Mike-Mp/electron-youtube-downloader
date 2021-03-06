@@ -1,10 +1,16 @@
 import React from 'react';
+
+import Select from 'react-select';
+
 import { getVideoDetails } from '../ytdl_functions/videoDataFunctions';
 
 import MsgBox from './MsgBox';
 import VideoDetails from './VideoDetails';
 
-import { IndexProps } from '../interfaces/interface';
+import { IndexProps, OptionType } from '../interfaces/interface';
+
+import '../css/select_styling.css';
+import selectStyles from '../css/selectStyles';
 
 const Form = ({
   qualityData,
@@ -44,20 +50,33 @@ const Form = ({
     setVideoData(details);
   };
 
-  let optionSection;
+  const optionSection: OptionType[] = [];
 
+  console.log(qualityData);
   if (qualityData && qualityData.length > 0 && qualityData.length !== 1) {
-    optionSection = qualityData.map((format) => {
-      return (
-        <option
-          key={format.itag}
-          value={format.itag}
-        >{`${format.qualityLabel} ${format.container} ${format.fps}FPS`}</option>
-      );
+    // optionSection = qualityData.map((format) => {
+    //   return (
+    //     <option
+    //       key={format.itag}
+    //       value={format.itag}
+    //     >{`${format.qualityLabel} ${format.container} ${format.fps}FPS`}</option>
+    //   );
+    // });
+
+    qualityData.map((format) => {
+      return optionSection.push({
+        value: format.itag,
+        label: `${format.qualityLabel} ${format.container} ${format.fps}FPS`,
+      });
     });
   } else {
-    optionSection = <option disabled>Get data first</option>;
+    // optionSection = <option disabled>Get data first</option>;
+    optionSection.push({
+      value: 0,
+      label: 'Get quality data first',
+    });
   }
+
   return (
     <form>
       <MsgBox message={message} />
@@ -83,17 +102,7 @@ const Form = ({
         <button type="button" onClick={getQualityData}>
           Get available quality formats for the video
         </button>
-        <div id="select">
-          <select
-            name="vidQuality"
-            id="vidQuality"
-            autoComplete="off"
-            defaultValue={qualityData ? qualityData[0]?.itag : 'Get data first'}
-            required
-          >
-            {optionSection}
-          </select>
-        </div>
+        <Select options={optionSection} styles={selectStyles} required />
       </fieldset>
     </form>
   );

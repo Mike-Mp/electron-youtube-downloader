@@ -124,6 +124,7 @@ p {
 
 .downloadBox {
   padding-left: 15px;
+  padding-bottom: 15px;
   color: white;
   background-color: rgba(0, 0, 0, 0.4);
 }

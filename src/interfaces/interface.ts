@@ -25,3 +25,8 @@ export interface IndexProps {
     >
   >;
 }
+
+export type OptionType = {
+  value: number;
+  label: string;
+};

@@ -1,7 +1,6 @@
 import React from 'react';
 import { getVideoFormats } from '../ytdl_functions/videoDataFunctions';
 
-import '../css/select_styling.css';
 import Form from '../components/Form';
 
 import { IndexProps } from '../interfaces/interface';
