@@ -32,10 +32,31 @@ const Form = ({
   setVideoData: IndexProps['setVideoData'];
 }) => {
   const [itagValue, setItagValue] = React.useState<string>('');
+  const [useDefault, setUseDefault] = React.useState<boolean>(true);
+  const dimensionsRef = React.useRef<HTMLHeadingElement>(null);
+  const [qualityDimensions, setQualityDimensions] = React.useState({
+    width: 0,
+    height: 0,
+  });
+
+  React.useEffect(() => {
+    if (dimensionsRef.current) {
+      setQualityDimensions({
+        width: dimensionsRef.current.getBoundingClientRect().width,
+        height: dimensionsRef.current.getBoundingClientRect().height,
+      });
+    }
+  }, [dimensionsRef]);
 
   const handleItagChange = (e: { label: string; value: string } | null) => {
     if (e) return setItagValue(`${e.value}`);
     return setItagValue('');
+  };
+
+  const handleUseDefault = (e: {
+    target: { checked: boolean | ((prevState: boolean) => boolean) };
+  }) => {
+    setUseDefault(!useDefault);
   };
 
   const getDetails = async () => {
@@ -102,16 +123,28 @@ const Form = ({
         </div>
       </div>
       <div className="useSpecific">
-        <label htmlFor="checkbox">Use specific data</label>
-        <input type="checkbox" id="checkbox" />
+        <label htmlFor="checkbox">Get specific data</label>
+        <input
+          type="checkbox"
+          id="checkbox"
+          onChange={(e) => handleUseDefault(e)}
+        />
       </div>
       <fieldset id="vidSelector">
-        <div>
+        <div
+          className={`hide${useDefault.toString().toUpperCase()}`}
+          style={{
+            width: qualityDimensions.width,
+            height: qualityDimensions.height,
+          }}
+        />
+        <div className="qualitySection" ref={dimensionsRef}>
           <legend>Video Quality</legend>
-          <button type="button" onClick={getQualityData}>
+          <button type="button" onClick={getQualityData} disabled={useDefault}>
             Get available quality formats for the video
           </button>
           <Select
+            disabled={useDefault}
             options={optionSection}
             styles={selectStyles}
             className="customSelect"
