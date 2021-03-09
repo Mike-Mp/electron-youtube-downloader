@@ -181,6 +181,17 @@ button {
   transform: translateY(15%);
 }
 
+.useSpecific {
+  display: flex;
+  border-bottom: 1px solid white;
+  margin-bottom: 20px;
+}
+
+.useSpecific input {
+  margin-left: 10px;
+  transform: translateY(39%);
+}
+
 #urlLabel {
   /* position: relative;
   top: -30%;

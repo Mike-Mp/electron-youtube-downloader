@@ -101,6 +101,10 @@ const Form = ({
           </button>
         </div>
       </div>
+      <div className="useSpecific">
+        <label htmlFor="checkbox">Use specific data</label>
+        <input type="checkbox" id="checkbox" />
+      </div>
       <fieldset id="vidSelector">
         <div>
           <legend>Video Quality</legend>
