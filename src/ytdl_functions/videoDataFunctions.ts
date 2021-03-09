@@ -1,5 +1,6 @@
-// import ytdl from 'ytdl-core';
 import ytdl = require('ytdl-core');
+
+const fs = require('fs');
 
 // TypeScript: import ytdl from 'ytdl-core'; with --esModuleInterop
 // TypeScript: import * as ytdl from 'ytdl-core'; with --allowSyntheticDefaultImports
@@ -42,4 +43,18 @@ export const getVideoFormats = async (url: string) => {
     });
 
   return resolvedFormat;
+};
+
+const testFunction = async (url: string) => {
+  const info = await ytdl.getInfo(url);
+  console.log(info);
+  const format = ytdl.chooseFormat(info.formats, { quality: 'highestvideo' });
+
+  const resolvedFormat = await Promise.resolve(format);
+
+  console.log('Format found!', resolvedFormat);
+
+  await ytdl(url, resolvedFormat).pipe(
+    fs.createWriteStream(`${info.videoDetails.title}.mp4`)
+  );
 };

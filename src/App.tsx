@@ -5,7 +5,7 @@ import './css/skeleton.css';
 import './App.global.css';
 
 import Header from './components/Header';
-import Index from './pages/Index';
+import Downloader from './pages/Downloader';
 import Instructions from './pages/Instructions';
 
 export default function App() {
@@ -13,7 +13,7 @@ export default function App() {
     <Router>
       <Header />
       <Switch>
-        <Route path="/" exact component={Index} />
+        <Route path="/" exact component={Downloader} />
         <Route path="/instructions" exact component={Instructions} />
       </Switch>
     </Router>

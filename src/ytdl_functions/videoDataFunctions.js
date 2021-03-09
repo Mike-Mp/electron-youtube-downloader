@@ -37,8 +37,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.getVideoFormats = exports.validateVideoURL = exports.getVideoDetails = void 0;
-// import ytdl from 'ytdl-core';
 var ytdl = require("ytdl-core");
+var fs = require('fs');
 // TypeScript: import ytdl from 'ytdl-core'; with --esModuleInterop
 // TypeScript: import * as ytdl from 'ytdl-core'; with --allowSyntheticDefaultImports
 // TypeScript: import ytdl = require('ytdl-core'); with neither of the above
@@ -89,3 +89,23 @@ var getVideoFormats = function (url) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 exports.getVideoFormats = getVideoFormats;
+var testFunction = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+    var info, format, resolvedFormat;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, ytdl.getInfo(url)];
+            case 1:
+                info = _a.sent();
+                console.log(info);
+                format = ytdl.chooseFormat(info.formats, { quality: 'highestvideo' });
+                return [4 /*yield*/, Promise.resolve(format)];
+            case 2:
+                resolvedFormat = _a.sent();
+                console.log('Format found!', resolvedFormat);
+                return [4 /*yield*/, ytdl(url, resolvedFormat).pipe(fs.createWriteStream(info.videoDetails.title + ".mp4"))];
+            case 3:
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); };

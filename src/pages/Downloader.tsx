@@ -5,7 +5,7 @@ import Form from '../components/Form';
 
 import { IndexProps } from '../interfaces/interface';
 
-const Index = () => {
+const Downloader = () => {
   const [videoURL, setVideoURL] = React.useState<string>('');
   const [qualityData, setQualityData] = React.useState<
     IndexProps['qualityData']
@@ -33,7 +33,6 @@ const Index = () => {
   return (
     <div className="mainPage">
       <div className="downloadBox">
-        <h3>Downloader</h3>
         <Form
           qualityData={qualityData}
           videoURL={videoURL}
@@ -49,4 +48,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Downloader;

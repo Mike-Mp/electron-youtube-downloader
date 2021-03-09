@@ -14,12 +14,12 @@ const Header = () => {
       <ul className="menuList">
         <li className="menuItem">
           <Link to="/" className="link">
-            Index
+            Downloader
           </Link>
         </li>
         <li className="menuItem">
           <Link to="/instructions" className="link">
-            Info
+            Instructions
           </Link>
         </li>
         <li className="menuItem">
@@ -28,7 +28,7 @@ const Header = () => {
           </Link>
         </li>
         <li className="menuItem">
-          <button type="button" onClick={setAboutFunction}>
+          <button type="button" className="link" onClick={setAboutFunction}>
             About
           </button>
         </li>

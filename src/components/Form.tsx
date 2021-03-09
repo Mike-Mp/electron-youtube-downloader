@@ -31,8 +31,18 @@ const Form = ({
   videoData: IndexProps['videoData'];
   setVideoData: IndexProps['setVideoData'];
 }) => {
+  const [itagValue, setItagValue] = React.useState<string>('');
+
+  const handleItagChange = (e: { label: string; value: string } | null) => {
+    if (e) return setItagValue(`${e.value}`);
+    return setItagValue('');
+  };
+
   const getDetails = async () => {
     if (videoURL.length === 0) {
+      if (message.length > 0) {
+        return;
+      }
       setMessage('Info: Empty video URL');
       setTimeout(() => setMessage(''), 8000);
       return;
@@ -50,19 +60,10 @@ const Form = ({
     setVideoData(details);
   };
 
-  const optionSection: OptionType[] = [];
+  const optionSection: any = [];
 
   console.log(qualityData);
   if (qualityData && qualityData.length > 0 && qualityData.length !== 1) {
-    // optionSection = qualityData.map((format) => {
-    //   return (
-    //     <option
-    //       key={format.itag}
-    //       value={format.itag}
-    //     >{`${format.qualityLabel} ${format.container} ${format.fps}FPS`}</option>
-    //   );
-    // });
-
     qualityData.map((format) => {
       return optionSection.push({
         value: format.itag,
@@ -70,18 +71,19 @@ const Form = ({
       });
     });
   } else {
-    // optionSection = <option disabled>Get data first</option>;
     optionSection.push({
       value: 0,
       label: 'Get quality data first',
     });
   }
 
+  console.log(optionSection);
   return (
     <form>
       <MsgBox message={message} />
       <div className="topSection">
         <div className="inputSubsection">
+          <h3>Downloader</h3>
           <label htmlFor="url" id="urlLabel">
             Enter video URL
           </label>
@@ -91,19 +93,33 @@ const Form = ({
             id="url"
             onChange={(e) => setVideoURL(e.target.value)}
           />
+          <button type="button" id="downloadDefault">
+            Download (default settings)
+          </button>
           <button type="button" id="getDetails" onClick={getDetails}>
             Get video details
           </button>
         </div>
-        <VideoDetails videoData={videoData} />
       </div>
       <fieldset id="vidSelector">
-        <legend>Video Quality</legend>
-        <button type="button" onClick={getQualityData}>
-          Get available quality formats for the video
-        </button>
-        <Select options={optionSection} styles={selectStyles} required />
+        <div>
+          <legend>Video Quality</legend>
+          <button type="button" onClick={getQualityData}>
+            Get available quality formats for the video
+          </button>
+          <Select
+            options={optionSection}
+            styles={selectStyles}
+            className="customSelect"
+            onChange={(e) => handleItagChange(e)}
+          />
+        </div>
+        <div>
+          <legend>Quality</legend>
+        </div>
       </fieldset>
+
+      <VideoDetails videoData={videoData} />
     </form>
   );
 };
