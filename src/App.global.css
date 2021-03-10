@@ -10,7 +10,6 @@ body {
 }
 
 header {
-  border: dashed #bab0c9 1px;
   border-radius: 5px;
   padding-left: 15px;
   margin: 10px;
@@ -251,15 +250,26 @@ button {
 } */
 
 .customSelect {
-  width: 10%;
+  width: 50%;
 }
 
-/* .qualitySectionfalse {
-  background-color: #222;
+.qualitySection {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+/* .qualitySection div {
+  border-right: 1px solid white;
+  padding: 0;
 } */
 
+.qualitySection legend {
+  text-decoration: underline;
+}
+
 .hideTRUE {
-  z-index: 9999;
+  z-index: 8999;
   background-color: rgba(0, 0, 0, 0.4);
   position: fixed;
   /* top: 0%; */

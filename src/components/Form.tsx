@@ -10,7 +10,7 @@ import VideoDetails from './VideoDetails';
 import { IndexProps, OptionType } from '../interfaces/interface';
 
 import '../css/select_styling.css';
-import selectStyles from '../css/selectStyles';
+import selectStyles from '../css/selectStyles.jsx';
 
 const Form = ({
   qualityData,
@@ -123,7 +123,7 @@ const Form = ({
         </div>
       </div>
       <div className="useSpecific">
-        <label htmlFor="checkbox">Get specific data</label>
+        <label htmlFor="checkbox">Don't use defaults</label>
         <input
           type="checkbox"
           id="checkbox"
@@ -139,20 +139,58 @@ const Form = ({
           }}
         />
         <div className="qualitySection" ref={dimensionsRef}>
-          <legend>Video Quality</legend>
-          <button type="button" onClick={getQualityData} disabled={useDefault}>
-            Get available quality formats for the video
-          </button>
-          <Select
-            disabled={useDefault}
-            options={optionSection}
-            styles={selectStyles}
-            className="customSelect"
-            onChange={(e) => handleItagChange(e)}
-          />
-        </div>
-        <div>
-          <legend>Quality</legend>
+          <div style={{ width: '50%' }}>
+            <legend>Video&Audio Quality</legend>
+            <button
+              type="button"
+              onClick={getQualityData}
+              disabled={useDefault}
+            >
+              available quality formats(video and audio)
+            </button>
+            <Select
+              disabled={useDefault}
+              options={optionSection}
+              styles={selectStyles}
+              className="customSelect"
+              onChange={(e) => handleItagChange(e)}
+            />
+            <button type="button">Download</button>
+          </div>
+          <div style={{ width: '50%' }}>
+            <legend>Video Quality</legend>
+            <button
+              type="button"
+              onClick={getQualityData}
+              disabled={useDefault}
+            >
+              available quality formats(video only)
+            </button>
+            <Select
+              disabled={useDefault}
+              options={optionSection}
+              styles={selectStyles}
+              className="customSelect"
+              onChange={(e) => handleItagChange(e)}
+            />
+
+            <button type="button">Download</button>
+          </div>
+          <div style={{ width: '50%' }}>
+            <legend>Audio Quality</legend>
+            <button type="button" disabled={useDefault}>
+              available quality formats(audio only)
+            </button>
+            <Select
+              disabled={useDefault}
+              options={optionSection}
+              styles={selectStyles}
+              className="customSelect"
+              onChange={(e) => handleItagChange(e)}
+            />
+
+            <button type="button">Download</button>
+          </div>
         </div>
       </fieldset>
 
