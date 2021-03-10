@@ -6,6 +6,7 @@ import { getVideoDetails } from '../ytdl_functions/videoDataFunctions';
 
 import MsgBox from './MsgBox';
 import VideoDetails from './VideoDetails';
+import QualitySection from './QualitySection';
 
 import { IndexProps, OptionType } from '../interfaces/interface';
 
@@ -32,7 +33,13 @@ const Form = ({
   setVideoData: IndexProps['setVideoData'];
 }) => {
   const [itagValue, setItagValue] = React.useState<string>('');
+
+  const [vidAud, setVidAud] = React.useState('');
+  const [vid, setVid] = React.useState('');
+  const [aud, setAud] = React.useState('');
+
   const [useDefault, setUseDefault] = React.useState<boolean>(true);
+
   const dimensionsRef = React.useRef<HTMLHeadingElement>(null);
   const [qualityDimensions, setQualityDimensions] = React.useState({
     width: 0,
@@ -77,13 +84,11 @@ const Form = ({
       return;
     }
 
-    console.log(details);
     setVideoData(details);
   };
 
   const optionSection: any = [];
 
-  console.log(qualityData);
   if (qualityData && qualityData.length > 0 && qualityData.length !== 1) {
     qualityData.map((format) => {
       return optionSection.push({
@@ -98,7 +103,6 @@ const Form = ({
     });
   }
 
-  console.log(optionSection);
   return (
     <form>
       <MsgBox message={message} />
@@ -138,60 +142,15 @@ const Form = ({
             height: qualityDimensions.height,
           }}
         />
-        <div className="qualitySection" ref={dimensionsRef}>
-          <div style={{ width: '50%' }}>
-            <legend>Video&Audio Quality</legend>
-            <button
-              type="button"
-              onClick={getQualityData}
-              disabled={useDefault}
-            >
-              available quality formats(video and audio)
-            </button>
-            <Select
-              disabled={useDefault}
-              options={optionSection}
-              styles={selectStyles}
-              className="customSelect"
-              onChange={(e) => handleItagChange(e)}
-            />
-            <button type="button">Download</button>
-          </div>
-          <div style={{ width: '50%' }}>
-            <legend>Video Quality</legend>
-            <button
-              type="button"
-              onClick={getQualityData}
-              disabled={useDefault}
-            >
-              available quality formats(video only)
-            </button>
-            <Select
-              disabled={useDefault}
-              options={optionSection}
-              styles={selectStyles}
-              className="customSelect"
-              onChange={(e) => handleItagChange(e)}
-            />
-
-            <button type="button">Download</button>
-          </div>
-          <div style={{ width: '50%' }}>
-            <legend>Audio Quality</legend>
-            <button type="button" disabled={useDefault}>
-              available quality formats(audio only)
-            </button>
-            <Select
-              disabled={useDefault}
-              options={optionSection}
-              styles={selectStyles}
-              className="customSelect"
-              onChange={(e) => handleItagChange(e)}
-            />
-
-            <button type="button">Download</button>
-          </div>
-        </div>
+        <QualitySection
+          dimensionsRef={dimensionsRef}
+          getQualityData={getQualityData}
+          useDefault={useDefault}
+          optionSection={optionSection}
+          setVidAud={setVidAud}
+          setVid={setVid}
+          setAud={setAud}
+        />
       </fieldset>
 
       <VideoDetails videoData={videoData} />
