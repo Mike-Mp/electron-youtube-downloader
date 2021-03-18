@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.downloadDefault = exports.getVideoFormats = exports.validateVideoURL = exports.getVideoDetails = void 0;
+exports.downloadDefault = exports.getFormats = exports.validateVideoID = exports.validateVideoURL = exports.getVideoDetails = void 0;
 var ytdl = require("ytdl-core");
 var fs = require('fs');
 // TypeScript: import ytdl from 'ytdl-core'; with --esModuleInterop
@@ -49,7 +49,7 @@ var getVideoDetails = function (url) { return __awaiter(void 0, void 0, void 0, 
         switch (_a.label) {
             case 0:
                 if (!ytdl.validateURL(url))
-                    return [2 /*return*/, { msg: 'Error: Invalid video URL' }];
+                    return [2 /*return*/, { msg: 'Error: Invalid video URL/id' }];
                 return [4 /*yield*/, ytdl.getInfo(url)];
             case 1:
                 info = _a.sent();
@@ -67,17 +67,37 @@ var validateVideoURL = function (url) {
     return validation;
 };
 exports.validateVideoURL = validateVideoURL;
-var getVideoFormats = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+var validateVideoID = function (videoID) {
+    var validation = ytdl.validateID(videoID);
+    return validation;
+};
+exports.validateVideoID = validateVideoID;
+var urlOrId = function (str) {
+    var rawStr;
+    var validation;
+    if (str.startsWith('www')) {
+        rawStr = "https://" + str;
+        validation = exports.validateVideoURL(rawStr);
+    }
+    else if (str.startsWith('http')) {
+        validation = exports.validateVideoURL(str);
+    }
+    else {
+        validation = exports.validateVideoID(str);
+    }
+    return validation;
+};
+var getFormats = function (url, typeOf) { return __awaiter(void 0, void 0, void 0, function () {
     var info, format, resolvedFormat;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!exports.validateVideoURL(url))
-                    return [2 /*return*/, [{ msg: 'Error: Invalid video URL' }]];
+                if (!urlOrId(url))
+                    return [2 /*return*/, [{ msg: 'Error: Invalid video URL/id' }]];
                 return [4 /*yield*/, ytdl.getInfo(url)];
             case 1:
                 info = _a.sent();
-                format = ytdl.filterFormats(info.formats, 'video');
+                format = ytdl.filterFormats(info.formats, typeOf);
                 resolvedFormat = Promise.resolve(format)
                     .then(function (res) { return res; })["catch"](function (err) {
                     var errObj = [err];
@@ -88,35 +108,17 @@ var getVideoFormats = function (url) { return __awaiter(void 0, void 0, void 0, 
         }
     });
 }); };
-exports.getVideoFormats = getVideoFormats;
-var testFunction = function (url) { return __awaiter(void 0, void 0, void 0, function () {
-    var info, format, resolvedFormat;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, ytdl.getInfo(url)];
-            case 1:
-                info = _a.sent();
-                console.log(info);
-                format = ytdl.chooseFormat(info.formats, { quality: 'highestvideo' });
-                return [4 /*yield*/, Promise.resolve(format)];
-            case 2:
-                resolvedFormat = _a.sent();
-                console.log('Format found!', resolvedFormat);
-                return [4 /*yield*/, ytdl(url, resolvedFormat).pipe(fs.createWriteStream(info.videoDetails.title + ".mp4"))];
-            case 3:
-                _a.sent();
-                return [2 /*return*/];
-        }
-    });
-}); };
+exports.getFormats = getFormats;
 var downloadDefault = function (url) { return __awaiter(void 0, void 0, void 0, function () {
     var title, sanitized;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, ytdl.getBasicInfo(url)];
-            case 1: return [4 /*yield*/, (_a.sent()).videoDetails.title];
-            case 2:
-                title = _a.sent();
+            case 0:
+                if (!urlOrId(url))
+                    return [2 /*return*/, { msg: 'Error: Invalid URL/id' }];
+                return [4 /*yield*/, ytdl.getBasicInfo(url)];
+            case 1:
+                title = (_a.sent()).videoDetails.title;
                 sanitized = title.replace(/[!?(),.<>:”"'/\\|*]/gu, ' ');
                 console.log("TITLE: " + title + " SANITIZED: " + sanitized);
                 return [2 /*return*/];

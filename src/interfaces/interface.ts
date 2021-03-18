@@ -4,7 +4,7 @@ import ytdl = require('ytdl-core');
 
 export interface IndexProps {
   qualityData: videoFormat[];
-  getQualityData: () => Promise<void>;
+  getQualityData: (typeOf: ytdl.Filter) => Promise<void>;
   setStateString: React.Dispatch<SetStateAction<string>>;
   videoData:
     | { msg: string; details?: undefined; timeString?: undefined }

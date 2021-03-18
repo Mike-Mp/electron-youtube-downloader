@@ -49,16 +49,11 @@ const urlOrId = (str: string) => {
   return validation;
 };
 
-const getFormats = async (url: string, typeOf: ytdl.Filter) => {
+export const getFormats = async (url: string, typeOf: ytdl.Filter) => {
+  if (!urlOrId(url)) return [{ msg: 'Error: Invalid video URL/id' }];
+
   const info = await ytdl.getInfo(url);
   const format = ytdl.filterFormats(info.formats, typeOf);
-  return format;
-};
-
-export const getVideoAndAudioFormats = async (url) => {
-  if (!urlOrId(url)) return [{ msg: 'Error: Invalid video URL/id' }];
-
-  const format = getFormats(url, 'videoandaudio');
 
   const resolvedFormat = Promise.resolve(format)
     .then((res) => res)
@@ -69,52 +64,6 @@ export const getVideoAndAudioFormats = async (url) => {
     });
 
   return resolvedFormat;
-};
-
-export const getVideoFormats = async (url: string) => {
-  if (!urlOrId(url)) return [{ msg: 'Error: Invalid video URL/id' }];
-
-  const format = getFormats(url, 'video');
-
-  const resolvedFormat = Promise.resolve(format)
-    .then((res) => res)
-    .catch((err) => {
-      const errObj = [err];
-      console.log('braaaap');
-      return errObj;
-    });
-
-  return resolvedFormat;
-};
-
-export const getAudioFormats = async (url: string) => {
-  if (!urlOrId(url)) return [{ msg: 'Error: Invalid video URL/id' }];
-
-  const format = getFormats(url, 'audio');
-
-  const resolvedFormat = Promise.resolve(format)
-    .then((res) => res)
-    .catch((err) => {
-      const errObj = [err];
-      console.log('braaap');
-      return errObj;
-    });
-
-  return resolvedFormat;
-};
-
-const testFunction = async (url: string) => {
-  const info = await ytdl.getInfo(url);
-  console.log(info);
-  const format = ytdl.chooseFormat(info.formats, { quality: 'highestvideo' });
-
-  const resolvedFormat = await Promise.resolve(format);
-
-  console.log('Format found!', resolvedFormat);
-
-  await ytdl(url, resolvedFormat).pipe(
-    fs.createWriteStream(`${info.videoDetails.title}.mp4`)
-  );
 };
 
 export const downloadDefault = async (url: string) => {

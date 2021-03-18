@@ -1,5 +1,6 @@
 import React from 'react';
-import { getVideoFormats } from '../ytdl_functions/videoDataFunctions';
+import ytdl from 'ytdl-core';
+import { getFormats } from '../ytdl_functions/videoDataFunctions';
 
 import Form from '../components/Form';
 
@@ -15,16 +16,16 @@ const Downloader = () => {
     msg: '',
   });
 
-  const getQualityData = async () => {
+  const getQualityData = async (typeOf: ytdl.Filter) => {
     if (videoURL.length === 0) {
       setMessage('Info: Empty video URL');
-      setTimeout(() => setMessage(''), 8000);
+      setTimeout(() => setMessage(''), 5000);
       return;
     }
-    const data = await getVideoFormats(videoURL);
+    const data = await getFormats(videoURL, typeOf);
     if (data[0].msg) {
       setMessage(data[0].msg);
-      setTimeout(() => setMessage(''), 8000);
+      setTimeout(() => setMessage(''), 5000);
       return;
     }
     setQualityData(data);

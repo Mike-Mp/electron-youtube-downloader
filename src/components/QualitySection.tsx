@@ -27,7 +27,11 @@ const QualitySection = ({
     <div className="qualitySection" ref={dimensionsRef}>
       <div style={{ width: '50%' }}>
         <legend>Video&Audio Quality</legend>
-        <button type="button" onClick={getQualityData} disabled={useDefault}>
+        <button
+          type="button"
+          onClick={() => getQualityData('videoandaudio')}
+          disabled={useDefault}
+        >
           available quality formats(video and audio)
         </button>
         <Select
@@ -40,42 +44,6 @@ const QualitySection = ({
             return setVidAud('');
           }}
         />
-        <button type="button">Download</button>
-      </div>
-      <div style={{ width: '50%' }}>
-        <legend>Video Quality</legend>
-        <button type="button" onClick={getQualityData} disabled={useDefault}>
-          available quality formats(video only)
-        </button>
-        <Select
-          disabled={useDefault}
-          options={optionSection}
-          styles={selectStyles}
-          className="customSelect"
-          onChange={(e) => {
-            if (e) return setVid(`${e.value}`);
-            return setVid('');
-          }}
-        />
-
-        <button type="button">Download</button>
-      </div>
-      <div style={{ width: '50%' }}>
-        <legend>Audio Quality</legend>
-        <button type="button" disabled={useDefault}>
-          available quality formats(audio only)
-        </button>
-        <Select
-          disabled={useDefault}
-          options={optionSection}
-          styles={selectStyles}
-          className="customSelect"
-          onChange={(e) => {
-            if (e) return setAud(`${e.value}`);
-            return setAud('');
-          }}
-        />
-
         <button type="button">Download</button>
       </div>
     </div>
