@@ -1,5 +1,7 @@
 import React from 'react';
 
+import ytdl from 'ytdl-core';
+
 import {
   getVideoDetails,
   downloadDefault,
@@ -22,6 +24,8 @@ const Form = ({
   setMessage,
   videoData,
   setVideoData,
+  setFormatType,
+  setItag,
 }: {
   qualityData: IndexProps['qualityData'];
   videoURL: string;
@@ -31,13 +35,9 @@ const Form = ({
   setMessage: IndexProps['setStateString'];
   videoData: IndexProps['videoData'];
   setVideoData: IndexProps['setVideoData'];
+  setFormatType: IndexProps['setFormatType'];
+  setItag: IndexProps['setStateString'];
 }) => {
-  const [itagValue, setItagValue] = React.useState<string>('');
-
-  const [vidAud, setVidAud] = React.useState('');
-  const [vid, setVid] = React.useState('');
-  const [aud, setAud] = React.useState('');
-
   const [useDefault, setUseDefault] = React.useState<boolean>(true);
 
   const dimensionsRef = React.useRef<HTMLHeadingElement>(null);
@@ -55,14 +55,13 @@ const Form = ({
     }
   }, [dimensionsRef]);
 
-  const handleDefaultDownload = () => {
-    console.log('LELELELLE');
-    downloadDefault(videoURL);
+  const handleItagChange = (e: { label: string; value: string } | null) => {
+    if (e) return setItag(`${e.value}`);
+    return setItag('');
   };
 
-  const handleItagChange = (e: { label: string; value: string } | null) => {
-    if (e) return setItagValue(`${e.value}`);
-    return setItagValue('');
+  const handleDefaultDownload = () => {
+    downloadDefault(videoURL);
   };
 
   const handleUseDefault = (e: {
@@ -156,9 +155,8 @@ const Form = ({
           getQualityData={getQualityData}
           useDefault={useDefault}
           optionSection={optionSection}
-          setVidAud={setVidAud}
-          setVid={setVid}
-          setAud={setAud}
+          setFormatType={setFormatType}
+          handleItagChange={handleItagChange}
         />
       </fieldset>
 
