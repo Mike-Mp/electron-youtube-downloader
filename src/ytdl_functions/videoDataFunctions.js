@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getVideoFormats = exports.validateVideoURL = exports.getVideoDetails = void 0;
+exports.downloadDefault = exports.getVideoFormats = exports.validateVideoURL = exports.getVideoDetails = void 0;
 var ytdl = require("ytdl-core");
 var fs = require('fs');
 // TypeScript: import ytdl from 'ytdl-core'; with --esModuleInterop
@@ -109,3 +109,18 @@ var testFunction = function (url) { return __awaiter(void 0, void 0, void 0, fun
         }
     });
 }); };
+var downloadDefault = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+    var title, sanitized;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, ytdl.getBasicInfo(url)];
+            case 1: return [4 /*yield*/, (_a.sent()).videoDetails.title];
+            case 2:
+                title = _a.sent();
+                sanitized = title.replace(/[!?(),.<>:”"'/\\|*]/gu, ' ');
+                console.log("TITLE: " + title + " SANITIZED: " + sanitized);
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.downloadDefault = downloadDefault;

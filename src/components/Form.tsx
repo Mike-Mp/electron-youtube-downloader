@@ -1,8 +1,9 @@
 import React from 'react';
 
-import Select from 'react-select';
-
-import { getVideoDetails } from '../ytdl_functions/videoDataFunctions';
+import {
+  getVideoDetails,
+  downloadDefault,
+} from '../ytdl_functions/videoDataFunctions';
 
 import MsgBox from './MsgBox';
 import VideoDetails from './VideoDetails';
@@ -11,7 +12,6 @@ import QualitySection from './QualitySection';
 import { IndexProps, OptionType } from '../interfaces/interface';
 
 import '../css/select_styling.css';
-import selectStyles from '../css/selectStyles.jsx';
 
 const Form = ({
   qualityData,
@@ -54,6 +54,11 @@ const Form = ({
       });
     }
   }, [dimensionsRef]);
+
+  const handleDefaultDownload = () => {
+    console.log('LELELELLE');
+    downloadDefault(videoURL);
+  };
 
   const handleItagChange = (e: { label: string; value: string } | null) => {
     if (e) return setItagValue(`${e.value}`);
@@ -118,7 +123,11 @@ const Form = ({
             id="url"
             onChange={(e) => setVideoURL(e.target.value)}
           />
-          <button type="button" id="downloadDefault">
+          <button
+            type="button"
+            id="downloadDefault"
+            onClick={handleDefaultDownload}
+          >
             Download (default settings)
           </button>
           <button type="button" id="getDetails" onClick={getDetails}>

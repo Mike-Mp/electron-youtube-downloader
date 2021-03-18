@@ -29,8 +29,14 @@ export const validateVideoURL = (url: string) => {
   return validation;
 };
 
+export const validateVideoID = (videoID: string) => {
+  const validation = ytdl.validateID(videoID);
+  return validation;
+};
+
 export const getVideoFormats = async (url: string) => {
   if (!validateVideoURL(url)) return [{ msg: 'Error: Invalid video URL' }];
+
   const info = await ytdl.getInfo(url);
   const format = ytdl.filterFormats(info.formats, 'video');
 
@@ -57,4 +63,12 @@ const testFunction = async (url: string) => {
   await ytdl(url, resolvedFormat).pipe(
     fs.createWriteStream(`${info.videoDetails.title}.mp4`)
   );
+};
+
+export const downloadDefault = async (url: string) => {
+  const { title } = (await ytdl.getBasicInfo(url)).videoDetails;
+  // const testString = 'Q<u>!?</u>otation Marks song from Grammaropolis - "Quote Me”';
+  const sanitized = title.replace(/[!?(),.<>:”"'/\\|*]/gu, ' ');
+  console.log(`TITLE: ${title} SANITIZED: ${sanitized}`);
+  // await ytdl(url).pipe(fs.createWriteStream(`${sanitized}.mp4`));
 };
