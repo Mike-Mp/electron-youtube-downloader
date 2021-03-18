@@ -3,7 +3,7 @@ import { videoFormat } from 'ytdl-core';
 import ytdl = require('ytdl-core');
 
 export interface IndexProps {
-  qualityData: videoFormat[];
+  qualityData: { data: videoFormat[]; typeOfData: ytdl.Filter };
   getQualityData: () => Promise<void>;
   setStateString: React.Dispatch<SetStateAction<string>>;
   videoData:

@@ -26,9 +26,20 @@ const QualitySection = ({
     } | null
   ) => any;
 }) => {
+  const [defaultOptionValue, setDefaultOptionValue] = React.useState({
+    itag: 0,
+    label: 'Get data first',
+  });
+
+  React.useEffect(() => {
+    return setDefaultOptionValue(optionSection[0]?.label);
+  }, [optionSection]);
+
   const handleOnChange = (e: any) => {
     setFormatType(e.target.value);
   };
+
+  console.log(defaultOptionValue);
 
   return (
     <div className="qualitySection" ref={dimensionsRef}>
@@ -38,9 +49,9 @@ const QualitySection = ({
           <label htmlFor="format">Video And Audio</label>
           <input type="radio" name="format" value="videoandaudio" />
           <label htmlFor="format">Video</label>
-          <input type="radio" name="format" value="video" />
+          <input type="radio" name="format" value="videoonly" />
           <label htmlFor="format">Audio</label>
-          <input type="radio" name="format" value="audio" />
+          <input type="radio" name="format" value="audioonly" />
         </div>
         <button type="button" onClick={getQualityData} disabled={useDefault}>
           available quality formats
@@ -48,6 +59,7 @@ const QualitySection = ({
         <Select
           disabled={useDefault}
           options={optionSection}
+          defaultValue={defaultOptionValue}
           styles={selectStyles}
           className="customSelect"
           onChange={(e) => handleItagChange(e)}

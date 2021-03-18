@@ -7,6 +7,8 @@ import {
   downloadDefault,
 } from '../ytdl_functions/videoDataFunctions';
 
+import optionFiller from '../ytdl_functions/optionFiller';
+
 import MsgBox from './MsgBox';
 import VideoDetails from './VideoDetails';
 import QualitySection from './QualitySection';
@@ -91,21 +93,9 @@ const Form = ({
     setVideoData(details);
   };
 
-  const optionSection: any = [];
+  let optionSection: { value: any; label: string }[] = [];
 
-  if (qualityData && qualityData.length > 0 && qualityData.length !== 1) {
-    qualityData.map((format) => {
-      return optionSection.push({
-        value: format.itag,
-        label: `${format.qualityLabel} ${format.container} ${format.fps}FPS`,
-      });
-    });
-  } else {
-    optionSection.push({
-      value: 0,
-      label: 'Get quality data first',
-    });
-  }
+  optionSection = optionFiller(qualityData.data, qualityData.typeOfData);
 
   return (
     <form>

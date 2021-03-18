@@ -14,7 +14,7 @@ const Downloader = () => {
 
   const [qualityData, setQualityData] = React.useState<
     IndexProps['qualityData']
-  >([]);
+  >({ data: [], typeOfData: 'videoandaudio' });
 
   const [message, setMessage] = React.useState<string>('');
 
@@ -39,8 +39,10 @@ const Downloader = () => {
       setTimeout(() => setMessage(''), 5000);
       return;
     }
-    setQualityData(data);
+    setQualityData({ data, typeOfData: formatType });
   };
+
+  console.log(qualityData);
 
   return (
     <div className="mainPage">

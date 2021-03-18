@@ -318,3 +318,22 @@ button {
 }
 
 /* END MESSAGE BOX */
+
+.formatRadio {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.formatRadio label {
+  margin-right: 10px;
+}
+
+.formatRadio input:first-of-type {
+  margin-right: 20px;
+}
+
+.formatRadio label:last-of-type {
+  margin-left: 20px;
+}
