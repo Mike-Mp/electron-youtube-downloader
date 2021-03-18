@@ -9,7 +9,7 @@ const fs = require('fs');
 // const url11 = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
 
 export const getVideoDetails = async (url: string) => {
-  if (!ytdl.validateURL(url)) return { msg: 'Error: Invalid video URL' };
+  if (!ytdl.validateURL(url)) return { msg: 'Error: Invalid video URL/id' };
 
   const info = await ytdl.getInfo(url);
 
@@ -34,17 +34,69 @@ export const validateVideoID = (videoID: string) => {
   return validation;
 };
 
-export const getVideoFormats = async (url: string) => {
-  if (!validateVideoURL(url)) return [{ msg: 'Error: Invalid video URL' }];
+const urlOrId = (str: string) => {
+  let rawStr;
+  let validation;
+  if (str.startsWith('www')) {
+    rawStr = `https://${str}`;
+    validation = validateVideoURL(rawStr);
+  } else if (str.startsWith('http')) {
+    validation = validateVideoURL(str);
+  } else {
+    validation = validateVideoID(str);
+  }
 
+  return validation;
+};
+
+const getFormats = async (url: string, typeOf: ytdl.Filter) => {
   const info = await ytdl.getInfo(url);
-  const format = ytdl.filterFormats(info.formats, 'video');
+  const format = ytdl.filterFormats(info.formats, typeOf);
+  return format;
+};
+
+export const getVideoAndAudioFormats = async (url) => {
+  if (!urlOrId(url)) return [{ msg: 'Error: Invalid video URL/id' }];
+
+  const format = getFormats(url, 'videoandaudio');
 
   const resolvedFormat = Promise.resolve(format)
     .then((res) => res)
     .catch((err) => {
       const errObj = [err];
       console.log('braaaap');
+      return errObj;
+    });
+
+  return resolvedFormat;
+};
+
+export const getVideoFormats = async (url: string) => {
+  if (!urlOrId(url)) return [{ msg: 'Error: Invalid video URL/id' }];
+
+  const format = getFormats(url, 'video');
+
+  const resolvedFormat = Promise.resolve(format)
+    .then((res) => res)
+    .catch((err) => {
+      const errObj = [err];
+      console.log('braaaap');
+      return errObj;
+    });
+
+  return resolvedFormat;
+};
+
+export const getAudioFormats = async (url: string) => {
+  if (!urlOrId(url)) return [{ msg: 'Error: Invalid video URL/id' }];
+
+  const format = getFormats(url, 'audio');
+
+  const resolvedFormat = Promise.resolve(format)
+    .then((res) => res)
+    .catch((err) => {
+      const errObj = [err];
+      console.log('braaap');
       return errObj;
     });
 
@@ -66,6 +118,7 @@ const testFunction = async (url: string) => {
 };
 
 export const downloadDefault = async (url: string) => {
+  if (!urlOrId(url)) return { msg: 'Error: Invalid URL/id' };
   const { title } = (await ytdl.getBasicInfo(url)).videoDetails;
   // const testString = 'Q<u>!?</u>otation Marks song from Grammaropolis - "Quote Me”';
   const sanitized = title.replace(/[!?(),.<>:”"'/\\|*]/gu, ' ');
