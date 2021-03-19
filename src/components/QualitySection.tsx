@@ -5,6 +5,7 @@ import Select from 'react-select';
 import { IndexProps } from '../interfaces/interface';
 
 import selectStyles from '../css/selectStyles.jsx';
+import { FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 
 const QualitySection = ({
   dimensionsRef,
@@ -22,7 +23,7 @@ const QualitySection = ({
   handleItagChange: (
     e: {
       label: string;
-      value: string;
+      itag: number;
     } | null
   ) => any;
 }) => {
@@ -43,28 +44,43 @@ const QualitySection = ({
 
   return (
     <div className="qualitySection" ref={dimensionsRef}>
-      <div style={{ width: '50%' }}>
+      <div style={{ width: '50%', paddingBottom: '20px' }}>
         <legend>Choose format</legend>
-        <div className="formatRadio" onChange={(e) => handleOnChange(e)}>
-          <label htmlFor="format">Video And Audio</label>
-          <input type="radio" name="format" value="videoandaudio" />
-          <label htmlFor="format">Video</label>
-          <input type="radio" name="format" value="videoonly" />
-          <label htmlFor="format">Audio</label>
-          <input type="radio" name="format" value="audioonly" />
-        </div>
+        <RadioGroup
+          aria-label="gender"
+          name="typeFormat"
+          onChange={handleOnChange}
+        >
+          <FormControlLabel
+            value="videoandaudio"
+            control={<Radio color="primary" />}
+            label="Video and Audio"
+          />
+          <FormControlLabel
+            value="videoonly"
+            control={<Radio color="primary" />}
+            label="Video"
+          />
+          <FormControlLabel
+            value="audioonly"
+            control={<Radio color="primary" />}
+            label="Audio"
+          />
+        </RadioGroup>
         <button type="button" onClick={getQualityData} disabled={useDefault}>
-          available quality formats
+          Get available quality formats
         </button>
-        <Select
-          disabled={useDefault}
-          options={optionSection}
-          defaultValue={defaultOptionValue}
-          styles={selectStyles}
-          className="customSelect"
-          onChange={(e) => handleItagChange(e)}
-        />
-        <button type="button">Download</button>
+        <div className="selectDownload">
+          <Select
+            disabled={useDefault}
+            options={optionSection}
+            defaultValue={defaultOptionValue}
+            styles={selectStyles}
+            className="customSelect"
+            onChange={(e) => handleItagChange(e)}
+          />
+          <button type="button">Download</button>
+        </div>
       </div>
     </div>
   );
