@@ -256,16 +256,37 @@ button {
 .qualitySection {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  align-items: center;
+  /* justify-content: flex-start; */
 }
-
-/* .qualitySection div {
-  border-right: 1px solid white;
-  padding: 0;
-} */
 
 .qualitySection legend {
   text-decoration: underline;
+}
+
+.radioGroup {
+  width: 20%;
+  font-size: 1.8rem;
+}
+
+.secondSection {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.secondSection button:first-child {
+  width: 50%;
+}
+
+.selectDownload {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.selectDownload button {
+  margin-left: 20px;
 }
 
 .hideTRUE {
@@ -318,13 +339,3 @@ button {
 }
 
 /* END MESSAGE BOX */
-
-.selectDownload {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.selectDownload button {
-  margin-left: 20px;
-}

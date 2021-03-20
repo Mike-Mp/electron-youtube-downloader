@@ -42,8 +42,12 @@ const QualitySection = ({
   console.log(optionValue);
 
   return (
-    <div className="qualitySection" ref={dimensionsRef}>
-      <div style={{ width: '50%', paddingBottom: '20px' }}>
+    <div
+      className="qualitySection"
+      ref={dimensionsRef}
+      style={{ width: '100%', paddingBottom: '20px' }}
+    >
+      <div className="radioGroup">
         <legend>Choose format</legend>
         <RadioGroup
           aria-label="gender"
@@ -66,6 +70,9 @@ const QualitySection = ({
             label="Audio"
           />
         </RadioGroup>
+      </div>
+
+      <div className="secondSection">
         <button type="button" onClick={getQualityData} disabled={useDefault}>
           Get available quality formats
         </button>
@@ -73,6 +80,7 @@ const QualitySection = ({
           <Select
             disabled={!useDefault}
             options={optionSection}
+            value={optionValue}
             defaultValue={{ value: 0, label: 'Get data first' }}
             styles={selectStyles}
             className="customSelect"
