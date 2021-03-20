@@ -57,9 +57,12 @@ const Form = ({
     }
   }, [dimensionsRef]);
 
-  const handleItagChange = (e: { label: string; value: string } | null) => {
-    if (e) return setItag(`${e.value}`);
-    return setItag('');
+  const handleItagChange = (e: { label: string; value: number } | null) => {
+    if (e) {
+      setItag(`${e.value}`);
+      return;
+    }
+    setItag('');
   };
 
   const handleDefaultDownload = () => {
@@ -125,10 +128,11 @@ const Form = ({
         </div>
       </div>
       <div className="useSpecific">
-        <label htmlFor="checkbox">Don't use defaults</label>
+        <label htmlFor="checkbox">Use defaults</label>
         <input
           type="checkbox"
           id="checkbox"
+          checked={useDefault}
           onChange={(e) => handleUseDefault(e)}
         />
       </div>

@@ -2,10 +2,11 @@ import React from 'react';
 
 import Select from 'react-select';
 
+import { FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
+
 import { IndexProps } from '../interfaces/interface';
 
 import selectStyles from '../css/selectStyles.jsx';
-import { FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 
 const QualitySection = ({
   dimensionsRef,
@@ -23,24 +24,22 @@ const QualitySection = ({
   handleItagChange: (
     e: {
       label: string;
-      itag: number;
+      value: number;
     } | null
   ) => any;
 }) => {
-  const [defaultOptionValue, setDefaultOptionValue] = React.useState({
-    itag: 0,
-    label: 'Get data first',
-  });
-
-  React.useEffect(() => {
-    return setDefaultOptionValue(optionSection[0]?.label);
-  }, [optionSection]);
+  const [optionValue, setOptionValue] = React.useState({ value: 0, label: '' });
 
   const handleOnChange = (e: any) => {
     setFormatType(e.target.value);
   };
 
-  console.log(defaultOptionValue);
+  const handleSelectChange = (e: { value: number; label: string } | null) => {
+    if (!e) return;
+    setOptionValue({ value: e.value, label: e.label });
+  };
+
+  console.log(optionValue);
 
   return (
     <div className="qualitySection" ref={dimensionsRef}>
@@ -72,12 +71,15 @@ const QualitySection = ({
         </button>
         <div className="selectDownload">
           <Select
-            disabled={useDefault}
+            disabled={!useDefault}
             options={optionSection}
-            defaultValue={defaultOptionValue}
+            defaultValue={{ value: 0, label: 'Get data first' }}
             styles={selectStyles}
             className="customSelect"
-            onChange={(e) => handleItagChange(e)}
+            onChange={(e) => {
+              handleItagChange(e);
+              handleSelectChange(e);
+            }}
           />
           <button type="button">Download</button>
         </div>

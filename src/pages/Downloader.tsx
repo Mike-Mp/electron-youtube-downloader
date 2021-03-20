@@ -24,7 +24,6 @@ const Downloader = () => {
 
   const [itag, setItag] = React.useState('');
 
-  console.log(formatType);
   console.log(itag);
 
   const getQualityData = async () => {
