@@ -8,6 +8,8 @@ import { IndexProps } from '../interfaces/interface';
 
 import selectStyles from '../css/selectStyles.jsx';
 
+import { radioStyles } from '../css/makeStyles';
+
 const QualitySection = ({
   dimensionsRef,
   getQualityData,
@@ -28,6 +30,8 @@ const QualitySection = ({
     } | null
   ) => any;
 }) => {
+  const classes = radioStyles();
+
   const [optionValue, setOptionValue] = React.useState({ value: 0, label: '' });
 
   const handleOnChange = (e: any) => {
@@ -50,24 +54,30 @@ const QualitySection = ({
       <div className="radioGroup">
         <legend>Choose format</legend>
         <RadioGroup
-          aria-label="gender"
+          aria-label="format type"
           name="typeFormat"
           onChange={handleOnChange}
         >
           <FormControlLabel
             value="videoandaudio"
-            control={<Radio color="primary" />}
+            aria-label="video and audio"
+            control={<Radio color="default" classes={{ root: classes.root }} />}
             label="Video and Audio"
+            classes={{ label: classes.label }}
           />
           <FormControlLabel
             value="videoonly"
-            control={<Radio color="primary" />}
+            aria-label="video only"
+            control={<Radio color="default" classes={{ root: classes.root }} />}
             label="Video"
+            classes={{ label: classes.label }}
           />
           <FormControlLabel
             value="audioonly"
-            control={<Radio color="primary" />}
+            aria-label="audio only"
+            control={<Radio color="default" classes={{ root: classes.root }} />}
             label="Audio"
+            classes={{ label: classes.label }}
           />
         </RadioGroup>
       </div>

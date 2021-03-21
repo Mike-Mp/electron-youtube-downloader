@@ -107,7 +107,7 @@ const Form = ({
         <div className="inputSubsection">
           <h3>Downloader</h3>
           <label htmlFor="url" id="urlLabel">
-            Enter video URL
+            Enter video URL/ID
           </label>
           <input
             type="text"
