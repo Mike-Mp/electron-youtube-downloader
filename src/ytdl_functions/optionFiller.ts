@@ -14,7 +14,7 @@ const optionFiller = (data: ytdl.videoFormat[], typeOfData: ytdl.Filter) => {
     data.map((format) => {
       return optionSection.push({
         value: format.itag,
-        label: `${format.qualityLabel} || ${format.container} || ${format.fps}FPS || ${format.audioSampleRate}kHz || itag: ${format.itag}`,
+        label: `${format.qualityLabel} || ${format.container} || ${format.fps}FPS || itag: ${format.itag}`,
       });
     });
   } else {

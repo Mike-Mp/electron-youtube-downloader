@@ -6,7 +6,7 @@ import { FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 
 import { IndexProps } from '../interfaces/interface';
 
-import selectStyles from '../css/selectStyles.jsx';
+import selectStyles from '../css/selectStyles';
 
 import { radioStyles } from '../css/makeStyles';
 
