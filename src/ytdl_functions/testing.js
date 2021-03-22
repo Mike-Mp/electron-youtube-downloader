@@ -37,11 +37,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var fs = require("fs");
+var electron_1 = require("electron");
 var ytdl = require("ytdl-core");
 var url = 'https://www.youtube.com/watch?v=KkhGkRahU6g';
 var urlTwo = 'https://www.youtube.com/watch?v=K4lRfZyRD8k';
 var downloadVideo = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var title, sanitized, fullPath;
+    var title, sanitized, dirPath, fullPath;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, ytdl.getBasicInfo(url)];
@@ -49,28 +50,17 @@ var downloadVideo = function () { return __awaiter(void 0, void 0, void 0, funct
                 title = (_a.sent()).videoDetails.title;
                 sanitized = title.replace(/[!?(),.<>:”"'/\\|*]/gu, ' ');
                 console.log("TITLE: " + title + " SANITIZED: " + sanitized);
-                if (process.env.HOME && process.env.HOME.length > 0) {
-                    console.log(process.env.HOME);
-                    fullPath = process.env.HOME + "/Downloads/" + sanitized + ".mp4";
-                }
+                dirPath = process.env.HOME + "/Downloads/lel";
+                if (!(process.env.HOME && process.env.HOME.length > 0)) return [3 /*break*/, 3];
+                console.log(process.env.HOME);
+                fs.mkdir(dirPath, function () { return console.log("writing " + sanitized + " to disk"); });
+                fullPath = process.env.HOME + "/Downloads/" + sanitized + ".mp4";
                 return [4 /*yield*/, ytdl(url, { quality: 'highest' }).pipe(fs.createWriteStream(fullPath))];
             case 2:
                 _a.sent();
-                return [2 /*return*/];
+                _a.label = 3;
+            case 3: return [2 /*return*/];
         }
     });
 }); };
-var writeToStream = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var dirPath, fullPath;
-    return __generator(this, function (_a) {
-        console.log('download started');
-        dirPath = process.env.HOME + "/Downloads/lel";
-        fullPath = process.env.HOME + "/Downloads/lel/lel.mp4";
-        fs.mkdir(dirPath, function () {
-            console.log('el');
-        });
-        return [2 /*return*/];
-    });
-}); };
-// downloadVideo();
-writeToStream();
+console.log(electron_1.dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] }));

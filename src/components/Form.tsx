@@ -1,6 +1,7 @@
 import React from 'react';
+import isElectron from 'is-electron';
 
-import ytdl from 'ytdl-core';
+import { dialog, ipcRenderer } from '../preload';
 
 import {
   getVideoDetails,
@@ -66,6 +67,7 @@ const Form = ({
   };
 
   const handleDefaultDownload = () => {
+    setMessage('Downloader: Download has started');
     downloadDefault(videoURL);
   };
 
@@ -100,8 +102,23 @@ const Form = ({
 
   optionSection = optionFiller(qualityData.data, qualityData.typeOfData);
 
+  const testDialog = async () => {
+    console.log(isElectron());
+    console.log(window.dialog);
+    console.log(window.ipcRenderer);
+    console.log(window);
+    const userDefinedPath = await window.dialog.showOpenDialog({
+      properties: ['openFile', 'multiSelections'],
+    });
+
+    console.log(userDefinedPath.filePaths);
+  };
+
   return (
     <form>
+      <button type="button" onClick={testDialog}>
+        test dialog
+      </button>
       <MsgBox message={message} />
       <div className="topSection">
         <div className="inputSubsection">

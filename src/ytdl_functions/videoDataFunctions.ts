@@ -73,7 +73,15 @@ export const downloadDefault = async (url: string) => {
   const sanitized = title.replace(/[!?(),.<>:”"'/\\|*]/gu, ' ');
   console.log(`TITLE: ${title} SANITIZED: ${sanitized}`);
 
-  const dirPath = `${process.env.HOME}/Downloads/${sanitized}`;
+  let dirPath;
+
+  if (process.env.HOME) {
+    dirPath = `${process.env.HOME}/Downloads/${sanitized}`;
+  } else if (process.env.USERPROFILE) {
+    dirPath = `${process.env.USERPROFILE}\\Downloads\\${sanitized}`;
+  } else {
+    return;
+  }
 
   fs.mkdir(dirPath, (err) => {
     console.log(err);

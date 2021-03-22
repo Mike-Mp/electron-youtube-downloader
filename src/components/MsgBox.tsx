@@ -3,10 +3,12 @@ import React, { ReactElement } from 'react';
 const MsgBox = ({ message }: { message: string }): ReactElement | null => {
   if (message.length > 0) {
     let typeOfMessage;
-    if (message.includes('Error:')) {
+    if (message.startsWith('Error:')) {
       typeOfMessage = 'error';
-    } else {
+    } else if (message.startsWith('Info:')) {
       typeOfMessage = 'info';
+    } else {
+      typeOfMessage = 'downloader';
     }
 
     return (
