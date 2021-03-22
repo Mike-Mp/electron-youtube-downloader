@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <header>
       <About visible={aboutBox} setAbout={setAboutFunction} />
-      <h1 id="appTitle">Mike-Mp's youtube downloader</h1>
+      <h1 id="appTitle">Electron youtube downloader</h1>
       <ul className="menuList">
         <li className="menuItem">
           <Link to="/" className="link">

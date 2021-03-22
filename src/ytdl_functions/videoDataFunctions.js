@@ -37,8 +37,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.downloadDefault = exports.getFormats = exports.validateVideoID = exports.validateVideoURL = exports.getVideoDetails = void 0;
+var fs = require("fs");
 var ytdl = require("ytdl-core");
-var fs = require('fs');
 // TypeScript: import ytdl from 'ytdl-core'; with --esModuleInterop
 // TypeScript: import * as ytdl from 'ytdl-core'; with --allowSyntheticDefaultImports
 // TypeScript: import ytdl = require('ytdl-core'); with neither of the above
@@ -110,7 +110,7 @@ var getFormats = function (url, typeOf) { return __awaiter(void 0, void 0, void 
 }); };
 exports.getFormats = getFormats;
 var downloadDefault = function (url) { return __awaiter(void 0, void 0, void 0, function () {
-    var title, sanitized;
+    var title, sanitized, dirPath;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -121,6 +121,11 @@ var downloadDefault = function (url) { return __awaiter(void 0, void 0, void 0, 
                 title = (_a.sent()).videoDetails.title;
                 sanitized = title.replace(/[!?(),.<>:”"'/\\|*]/gu, ' ');
                 console.log("TITLE: " + title + " SANITIZED: " + sanitized);
+                dirPath = process.env.HOME + "/Downloads/" + sanitized;
+                fs.mkdir(dirPath, function (err) {
+                    console.log(err);
+                });
+                ytdl(url, { quality: 'highest' }).pipe(fs.createWriteStream(dirPath + "/" + sanitized + ".mp4"));
                 return [2 /*return*/];
         }
     });

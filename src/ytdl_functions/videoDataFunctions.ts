@@ -1,6 +1,6 @@
-import ytdl = require('ytdl-core');
+import * as fs from 'fs';
 
-const fs = require('fs');
+import ytdl = require('ytdl-core');
 
 // TypeScript: import ytdl from 'ytdl-core'; with --esModuleInterop
 // TypeScript: import * as ytdl from 'ytdl-core'; with --allowSyntheticDefaultImports
@@ -72,5 +72,14 @@ export const downloadDefault = async (url: string) => {
   // const testString = 'Q<u>!?</u>otation Marks song from Grammaropolis - "Quote Me”';
   const sanitized = title.replace(/[!?(),.<>:”"'/\\|*]/gu, ' ');
   console.log(`TITLE: ${title} SANITIZED: ${sanitized}`);
-  // await ytdl(url).pipe(fs.createWriteStream(`${sanitized}.mp4`));
+
+  const dirPath = `${process.env.HOME}/Downloads/${sanitized}`;
+
+  fs.mkdir(dirPath, (err) => {
+    console.log(err);
+  });
+
+  ytdl(url, { quality: 'highest' }).pipe(
+    fs.createWriteStream(`${dirPath}/${sanitized}.mp4`)
+  );
 };
