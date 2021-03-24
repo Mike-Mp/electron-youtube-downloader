@@ -43,8 +43,6 @@ const QualitySection = ({
     setOptionValue({ value: e.value, label: e.label });
   };
 
-  console.log(optionValue);
-
   return (
     <div
       className="qualitySection"
@@ -99,7 +97,13 @@ const QualitySection = ({
               handleSelectChange(e);
             }}
           />
-          <button type="button">Download</button>
+          <button
+            type="button"
+            disabled={false}
+            onClick={() => console.log('disabled?')}
+          >
+            Download
+          </button>
         </div>
       </div>
     </div>

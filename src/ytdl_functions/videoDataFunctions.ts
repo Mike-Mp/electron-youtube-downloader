@@ -66,7 +66,10 @@ export const getFormats = async (url: string, typeOf: ytdl.Filter) => {
   return resolvedFormat;
 };
 
-export const downloadDefault = async (url: string) => {
+export const downloadDefault = async (
+  url: string,
+  filePath: string[] | null
+) => {
   if (!urlOrId(url)) return { msg: 'Error: Invalid URL/id' };
   const { title } = (await ytdl.getBasicInfo(url)).videoDetails;
   // const testString = 'Q<u>!?</u>otation Marks song from Grammaropolis - "Quote Me”';
@@ -91,3 +94,10 @@ export const downloadDefault = async (url: string) => {
     fs.createWriteStream(`${dirPath}/${sanitized}.mp4`)
   );
 };
+
+export const chosenDownload = async (
+  url: string,
+  itag: string,
+  formatType: ytdl.Filter,
+  filePaths: string[]
+) => {};

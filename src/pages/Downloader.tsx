@@ -1,5 +1,8 @@
 import React from 'react';
-import { getFormats } from '../ytdl_functions/videoDataFunctions';
+import {
+  getFormats,
+  chosenDownload,
+} from '../ytdl_functions/videoDataFunctions';
 
 import Form from '../components/Form';
 
@@ -39,6 +42,25 @@ const Downloader = () => {
       return;
     }
     setQualityData({ data, typeOfData: formatType });
+  };
+
+  const userChosenFormat = async () => {
+    if (itag.length === 0) {
+      setMessage('Please choose a format');
+      setTimeout(() => setMessage(''), 3000);
+      return;
+    }
+
+    console.log(itag);
+    console.log(formatType);
+    const dialogResult = await window.dialog.showOpenDialog({
+      properties: ['openDirectory', 'createDirectory'],
+      message: 'Where to create video directory',
+    });
+
+    if (!dialogResult.canceled) {
+      chosenDownload(videoURL, itag, formatType, dialogResult.filePaths);
+    }
   };
 
   console.log(qualityData);

@@ -36,31 +36,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var fs = require("fs");
-var electron_1 = require("electron");
 var ytdl = require("ytdl-core");
 var url = 'https://www.youtube.com/watch?v=KkhGkRahU6g';
 var urlTwo = 'https://www.youtube.com/watch?v=K4lRfZyRD8k';
+var urlThree = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
 var downloadVideo = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var title, sanitized, dirPath, fullPath;
+    var info, formats;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, ytdl.getBasicInfo(url)];
+            case 0: return [4 /*yield*/, ytdl.getInfo(urlThree)];
             case 1:
-                title = (_a.sent()).videoDetails.title;
-                sanitized = title.replace(/[!?(),.<>:”"'/\\|*]/gu, ' ');
-                console.log("TITLE: " + title + " SANITIZED: " + sanitized);
-                dirPath = process.env.HOME + "/Downloads/lel";
-                if (!(process.env.HOME && process.env.HOME.length > 0)) return [3 /*break*/, 3];
-                console.log(process.env.HOME);
-                fs.mkdir(dirPath, function () { return console.log("writing " + sanitized + " to disk"); });
-                fullPath = process.env.HOME + "/Downloads/" + sanitized + ".mp4";
-                return [4 /*yield*/, ytdl(url, { quality: 'highest' }).pipe(fs.createWriteStream(fullPath))];
-            case 2:
-                _a.sent();
-                _a.label = 3;
-            case 3: return [2 /*return*/];
+                info = _a.sent();
+                formats = ytdl.filterFormats(info.formats, 'videoonly');
+                console.log(formats);
+                return [2 /*return*/];
         }
     });
 }); };
-console.log(electron_1.dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] }));
+downloadVideo();

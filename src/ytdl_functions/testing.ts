@@ -4,22 +4,21 @@ import ytdl = require('ytdl-core');
 
 const url = 'https://www.youtube.com/watch?v=KkhGkRahU6g';
 const urlTwo = 'https://www.youtube.com/watch?v=K4lRfZyRD8k';
+const urlThree = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
 
 const downloadVideo = async () => {
-  const { title } = (await ytdl.getBasicInfo(url)).videoDetails;
-  // const testString = 'Q<u>!?</u>otation Marks song from Grammaropolis - "Quote Me”';
-  const sanitized = title.replace(/[!?(),.<>:”"'/\\|*]/gu, ' ');
-  console.log(`TITLE: ${title} SANITIZED: ${sanitized}`);
-
-  const dirPath = `${process.env.HOME}/Downloads/lel`;
-
-  if (process.env.HOME && process.env.HOME.length > 0) {
-    console.log(process.env.HOME);
-    fs.mkdir(dirPath, () => console.log(`writing ${sanitized} to disk`));
-    const fullPath = `${process.env.HOME}/Downloads/${sanitized}.mp4`;
-
-    await ytdl(url, { quality: 'highest' }).pipe(
-      fs.createWriteStream(fullPath)
-    );
-  }
+  const info = await ytdl.getInfo(urlThree);
+  const formats = ytdl.filterFormats(info.formats, 'videoonly');
+  console.log(formats);
+  // const format = await ytdl.chooseFormat(info.formats, { quality: 18 });
+  // console.log(format);
+  // ytdl
+  //   .downloadFromInfo(info, { quality: format.itag })
+  //   .pipe(
+  //     fs.createWriteStream(
+  //       `${process.env.HOME}/Downloads/BRAP/brap.${format.container}`
+  //     )
+  //   );
 };
+
+downloadVideo();

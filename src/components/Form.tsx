@@ -1,7 +1,4 @@
 import React from 'react';
-import isElectron from 'is-electron';
-
-import { dialog, ipcRenderer } from '../preload';
 
 import {
   getVideoDetails,
@@ -13,10 +10,18 @@ import optionFiller from '../ytdl_functions/optionFiller';
 import MsgBox from './MsgBox';
 import VideoDetails from './VideoDetails';
 import QualitySection from './QualitySection';
+import DownloadBar from './DownloadBar';
 
 import { IndexProps, OptionType } from '../interfaces/interface';
 
 import '../css/select_styling.css';
+
+declare global {
+  interface Window {
+    ipcRenderer: Electron.IpcRenderer;
+    dialog: Electron.Dialog;
+  }
+}
 
 const Form = ({
   qualityData,
@@ -67,13 +72,10 @@ const Form = ({
   };
 
   const handleDefaultDownload = () => {
-    setMessage('Downloader: Download has started');
-    downloadDefault(videoURL);
+    downloadDefault(videoURL, null);
   };
 
-  const handleUseDefault = (e: {
-    target: { checked: boolean | ((prevState: boolean) => boolean) };
-  }) => {
+  const handleUseDefault = () => {
     setUseDefault(!useDefault);
   };
 
@@ -102,23 +104,9 @@ const Form = ({
 
   optionSection = optionFiller(qualityData.data, qualityData.typeOfData);
 
-  const testDialog = async () => {
-    console.log(isElectron());
-    console.log(window.dialog);
-    console.log(window.ipcRenderer);
-    console.log(window);
-    const userDefinedPath = await window.dialog.showOpenDialog({
-      properties: ['openFile', 'multiSelections'],
-    });
-
-    console.log(userDefinedPath.filePaths);
-  };
-
   return (
     <form>
-      <button type="button" onClick={testDialog}>
-        test dialog
-      </button>
+      <DownloadBar />
       <MsgBox message={message} />
       <div className="topSection">
         <div className="inputSubsection">
@@ -137,10 +125,10 @@ const Form = ({
             id="downloadDefault"
             onClick={handleDefaultDownload}
           >
-            Download (default settings)
+            Download (highest audio and video)
           </button>
           <button type="button" id="getDetails" onClick={getDetails}>
-            Get video details
+            Get video metadata
           </button>
         </div>
       </div>
@@ -150,7 +138,7 @@ const Form = ({
           type="checkbox"
           id="checkbox"
           checked={useDefault}
-          onChange={(e) => handleUseDefault(e)}
+          onChange={handleUseDefault}
         />
       </div>
       <fieldset id="vidSelector">

@@ -23,11 +23,6 @@ const Header = () => {
           </Link>
         </li>
         <li className="menuItem">
-          <Link to="/defaults" className="link">
-            Defaults
-          </Link>
-        </li>
-        <li className="menuItem">
           <button type="button" className="link" onClick={setAboutFunction}>
             About
           </button>
