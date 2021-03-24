@@ -1,56 +1,78 @@
 import React from 'react';
-import { Stream } from 'stream';
-import * as fs from 'fs';
 
 import ytdl from 'ytdl-core';
 
-export const DownloadBar = () => {
+export const DownloadBar = ({
+  isWorking = false,
+  setIsWorking,
+  url,
+}: {
+  isWorking: boolean;
+  setIsWorking: React.Dispatch<React.SetStateAction<boolean>>;
+  url: string;
+}) => {
   const [downloadProgress, setDownloadProgress] = React.useState({
-    progress: 0,
-    completed: false,
-    total: 0,
-    loaded: 0,
+    audio: {
+      completed: false,
+      downloaded: '',
+      total: '',
+    },
+    video: {
+      completed: false,
+      downloaded: '',
+      total: '',
+    },
   });
 
-  React.useEffect(() => {
-    const ref = 'https://www.youtube.com/watch?v=osooxi5xBdQ';
-
-    const finishDownload = async (audio: any) => {
-      setDownloadProgress({
-        progress: 0,
-        total: 0,
-        loaded: 0,
-        completed: true,
-      });
-      audio.pipe(
-        fs.createWriteStream(`${process.env.HOME}/Downloads/BRAP/lol.mp4`)
-      );
-    };
-
-    const startDownload = async () => {
-      const audio = ytdl(ref, { quality: 'highestaudio' }).on(
-        'progress',
-        (_, downloaded, total) => {
-          setDownloadProgress({
-            total,
-            loaded: downloaded,
-            progress: 0,
+  const startDownload = async () => {
+    const audio = ytdl(url, { quality: 'highestaudio' }).on(
+      'progress',
+      (_, downloaded, total) => {
+        setDownloadProgress({
+          video: downloadProgress.video,
+          audio: {
             completed: false,
-          });
-        }
-      );
+            downloaded: (downloaded / 1024 / 1024).toFixed(2),
+            total: (total / 1024 / 1024).toFixed(2),
+          },
+        });
+      }
+    );
 
-      finishDownload(audio);
-    };
+    const video = ytdl(url, { quality: 'highestvideo' }).on(
+      'progress',
+      (_, downloaded, total) => {
+        setDownloadProgress({
+          audio: downloadProgress.audio,
+          video: {
+            completed: downloadProgress.video.completed,
+            downloaded: (downloaded / 1024 / 1024).toFixed(2),
+            total: (total / 1024 / 1024).toFixed(2),
+          },
+        });
+      }
+    );
+  };
 
+  React.useEffect(() => {
     startDownload();
   }, []);
 
-  if (!downloadProgress.completed) {
+  if (!isWorking) return null;
+
+  if (isWorking) {
     return (
-      <div>
-        <p>{downloadProgress.loaded}</p>
-        <p>{downloadProgress.total}</p>
+      <div className="downloadProgress">
+        <h6>Audio</h6>
+        <p>
+          {downloadProgress.audio.downloaded} out of{' '}
+          {downloadProgress.audio.total}
+        </p>
+        <h6>Video</h6>
+        <p>
+          {downloadProgress.video.downloaded} out of{' '}
+          {downloadProgress.video.total}
+        </p>
       </div>
     );
   }

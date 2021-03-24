@@ -47,6 +47,7 @@ const Form = ({
   setItag: IndexProps['setStateString'];
 }) => {
   const [useDefault, setUseDefault] = React.useState<boolean>(true);
+  const [isWorking, setIsWorking] = React.useState<boolean>(false);
 
   const dimensionsRef = React.useRef<HTMLHeadingElement>(null);
   const [qualityDimensions, setQualityDimensions] = React.useState({
@@ -106,7 +107,11 @@ const Form = ({
 
   return (
     <form>
-      <DownloadBar />
+      <DownloadBar
+        url={videoURL}
+        isWorking={isWorking}
+        setIsWorking={setIsWorking}
+      />
       <MsgBox message={message} />
       <div className="topSection">
         <div className="inputSubsection">
@@ -118,6 +123,7 @@ const Form = ({
             type="text"
             name="url"
             id="url"
+            disabled={isWorking}
             onChange={(e) => setVideoURL(e.target.value)}
           />
           <button
