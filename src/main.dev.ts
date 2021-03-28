@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint global-require: off, no-console: off */
 
 /**
@@ -11,10 +12,19 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+
+ipcMain.on('send_data_to_main', (event, arg) => {
+  console.log('arg', arg);
+  event.reply('send_data_to_renderer', arg);
+});
+
+ipcMain.on('process_finished', (event, arg) => {
+  event.reply('mark_complete', arg);
+});
 
 export default class AppUpdater {
   constructor() {

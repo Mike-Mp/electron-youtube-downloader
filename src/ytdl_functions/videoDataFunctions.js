@@ -36,32 +36,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.downloadDefault = exports.getFormats = exports.validateVideoID = exports.validateVideoURL = exports.getVideoDetails = void 0;
-var fs = require("fs");
+exports.chosenDownload = exports.getFormats = exports.getTitle = exports.getVideoDetails = exports.validateVideoID = exports.validateVideoURL = void 0;
 var ytdl = require("ytdl-core");
 // TypeScript: import ytdl from 'ytdl-core'; with --esModuleInterop
 // TypeScript: import * as ytdl from 'ytdl-core'; with --allowSyntheticDefaultImports
 // TypeScript: import ytdl = require('ytdl-core'); with neither of the above
 // const url11 = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
-var getVideoDetails = function (url) { return __awaiter(void 0, void 0, void 0, function () {
-    var info, details, videoLengthInSeconds, videoDateObject, timeString;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!ytdl.validateURL(url))
-                    return [2 /*return*/, { msg: 'Error: Invalid video URL/id' }];
-                return [4 /*yield*/, ytdl.getInfo(url)];
-            case 1:
-                info = _a.sent();
-                details = info.videoDetails;
-                videoLengthInSeconds = parseInt(details.lengthSeconds, 10);
-                videoDateObject = new Date(videoLengthInSeconds * 1000);
-                timeString = videoDateObject.toISOString().substr(11, 8);
-                return [2 /*return*/, { details: details, timeString: timeString }];
-        }
-    });
-}); };
-exports.getVideoDetails = getVideoDetails;
 var validateVideoURL = function (url) {
     var validation = ytdl.validateURL(url);
     return validation;
@@ -87,6 +67,37 @@ var urlOrId = function (str) {
     }
     return validation;
 };
+var getVideoDetails = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+    var info, details, videoLengthInSeconds, videoDateObject, timeString;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!urlOrId(url))
+                    return [2 /*return*/, { msg: 'Error: Invalid video URL/id' }];
+                return [4 /*yield*/, ytdl.getInfo(url)];
+            case 1:
+                info = _a.sent();
+                details = info.videoDetails;
+                videoLengthInSeconds = parseInt(details.lengthSeconds, 10);
+                videoDateObject = new Date(videoLengthInSeconds * 1000);
+                timeString = videoDateObject.toISOString().substr(11, 8);
+                return [2 /*return*/, { details: details, timeString: timeString }];
+        }
+    });
+}); };
+exports.getVideoDetails = getVideoDetails;
+var getTitle = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!urlOrId(url))
+                    return [2 /*return*/, { msg: 'Error: Invalid video URL/id' }];
+                return [4 /*yield*/, ytdl.getBasicInfo(url)];
+            case 1: return [2 /*return*/, (_a.sent()).videoDetails.title];
+        }
+    });
+}); };
+exports.getTitle = getTitle;
 var getFormats = function (url, typeOf) { return __awaiter(void 0, void 0, void 0, function () {
     var info, format, resolvedFormat;
     return __generator(this, function (_a) {
@@ -109,25 +120,7 @@ var getFormats = function (url, typeOf) { return __awaiter(void 0, void 0, void 
     });
 }); };
 exports.getFormats = getFormats;
-var downloadDefault = function (url) { return __awaiter(void 0, void 0, void 0, function () {
-    var title, sanitized, dirPath;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!urlOrId(url))
-                    return [2 /*return*/, { msg: 'Error: Invalid URL/id' }];
-                return [4 /*yield*/, ytdl.getBasicInfo(url)];
-            case 1:
-                title = (_a.sent()).videoDetails.title;
-                sanitized = title.replace(/[!?(),.<>:”"'/\\|*]/gu, ' ');
-                console.log("TITLE: " + title + " SANITIZED: " + sanitized);
-                dirPath = process.env.HOME + "/Downloads/" + sanitized;
-                fs.mkdir(dirPath, function (err) {
-                    console.log(err);
-                });
-                ytdl(url, { quality: 'highest' }).pipe(fs.createWriteStream(dirPath + "/" + sanitized + ".mp4"));
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.downloadDefault = downloadDefault;
+var chosenDownload = function (url, itag, formatType, filePaths) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
+    return [2 /*return*/];
+}); }); };
+exports.chosenDownload = chosenDownload;

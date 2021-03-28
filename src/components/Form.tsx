@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-  getVideoDetails,
-  downloadDefault,
-} from '../ytdl_functions/videoDataFunctions';
+import { getVideoDetails } from '../ytdl_functions/videoDataFunctions';
 
 import optionFiller from '../ytdl_functions/optionFiller';
 
@@ -73,7 +70,8 @@ const Form = ({
   };
 
   const handleDefaultDownload = () => {
-    downloadDefault(videoURL, null);
+    console.log('le download');
+    setIsWorking(true);
   };
 
   const handleUseDefault = () => {
@@ -86,7 +84,7 @@ const Form = ({
         return;
       }
       setMessage('Info: Empty video URL');
-      setTimeout(() => setMessage(''), 8000);
+      setTimeout(() => setMessage(''), 5000);
       return;
     }
 
@@ -111,6 +109,7 @@ const Form = ({
         url={videoURL}
         isWorking={isWorking}
         setIsWorking={setIsWorking}
+        setMessage={setMessage}
       />
       <MsgBox message={message} />
       <div className="topSection">
