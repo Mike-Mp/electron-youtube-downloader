@@ -14,7 +14,9 @@
     "postinstall": "yarn electron-rebuild"
   },
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "ffmpeg-static": "^4.3.0"
+  },
   "devDependencies": {
     "@types/react-select": "^4.0.13"
   }

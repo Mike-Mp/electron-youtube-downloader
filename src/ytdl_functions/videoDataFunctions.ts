@@ -50,9 +50,9 @@ export const getVideoDetails = async (url: string) => {
 };
 
 export const getTitle = async (url: string) => {
-  if (!urlOrId(url)) return { msg: 'Error: Invalid video URL/id' };
+  if (!urlOrId(url)) return 'Error: Invalid video URL/id';
   const { title } = (await ytdl.getBasicInfo(url)).videoDetails;
-  return { title };
+  return title;
 };
 
 export const getFormats = async (url: string, typeOf: ytdl.Filter) => {

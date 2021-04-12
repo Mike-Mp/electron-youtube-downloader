@@ -26,17 +26,19 @@ export const DownloadBar = ({
     },
   });
 
-  const [title, setTitle] = React.useState<string | { msg: string }[]>('');
+  const [title, setTitle] = React.useState<string>('');
 
   const beginProcess = async () => {
     console.log('download started');
     const updatedTitle = await getTitle(url);
 
-    if (updatedTitle?.msg) {
-      setMessage(updatedTitle?.msg);
+    if (updatedTitle.startsWith('Error:')) {
+      setMessage(updatedTitle);
       setTimeout(() => setMessage(''), 5000);
       return;
     }
+
+    setTitle(updatedTitle);
 
     startDownload(url);
   };
@@ -47,6 +49,14 @@ export const DownloadBar = ({
   };
 
   window.ipcRenderer.on('send_data_to_renderer', (_, args) => {
+    updateProgress(args);
+  });
+
+  const updateProgress = (args: {
+    start: any;
+    audio: { downloaded: number; total: number };
+    video: { downloaded: number; total: number };
+  }) => {
     const toMb = (i: number) => (i / 1024 / 1024).toFixed(2);
 
     const newProgress = {
@@ -62,6 +72,12 @@ export const DownloadBar = ({
     };
 
     setDownloadProgress(newProgress);
+  };
+
+  window.ipcRenderer.on('mark_complete', (_, args) => {
+    updateProgress(args);
+    setMessage('Info: Downloading has finished.');
+    setTimeout(() => setMessage(''), 5000);
   });
 
   if (!isWorking) return null;
@@ -69,11 +85,11 @@ export const DownloadBar = ({
   if (isWorking) {
     return (
       <div className="downloadProgress">
-        <p>title here</p>
+        <p>{title}</p>
         <h6>Audio</h6>
         <p>
-          {downloadProgress.audio.downloaded} out of{' '}
-          {downloadProgress.audio.total}
+          Downloaded {downloadProgress.audio.downloaded}mb out of{' '}
+          {downloadProgress.audio.total}mb
         </p>
         <h6>Video</h6>
         <p>
@@ -85,6 +101,9 @@ export const DownloadBar = ({
         </button>
         <button type="button" onClick={cancelProcess}>
           Cancel process
+        </button>
+        <button type="button" onClick={() => setIsWorking(false)}>
+          Close tab
         </button>
       </div>
     );
