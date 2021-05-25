@@ -1,4 +1,22 @@
-window.ipcRenderer = require('electron').ipcRenderer;
-const { dialog } = require('electron').remote;
+const { ipcRenderer } = require('electron');
 
-window.dialog = dialog;
+// contextBridge.exposeInMainWorld('appRuntime', {
+//   send: (channel, data) => {
+//     ipcRenderer.send(channel, data);
+//   },
+//   subscribe: (channel, listener) => {
+//     const subscription = (event, ...args) => listener(...args);
+//     ipcRenderer.on(channel, subscription);
+
+//     return () => {
+//       ipcRenderer.removeListener(channel, subscription);
+//     };
+//   },
+// });
+
+function init() {
+  window.isElectron = true;
+  window.ipcRenderer = ipcRenderer;
+}
+
+init();

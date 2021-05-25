@@ -19,8 +19,14 @@ export const validateVideoID = (videoID: string) => {
 };
 
 const urlOrId = (str: string) => {
-  let rawStr;
   let validation;
+  if (str === '') {
+    validation = false;
+    return validation;
+  }
+
+  let rawStr;
+
   if (str.startsWith('www')) {
     rawStr = `https://${str}`;
     validation = validateVideoURL(rawStr);
@@ -53,6 +59,14 @@ export const getTitle = async (url: string) => {
   if (!urlOrId(url)) return 'Error: Invalid video URL/id';
   const { title } = (await ytdl.getBasicInfo(url)).videoDetails;
   return title;
+};
+
+export const getTitleAndImage = async (url: string) => {
+  if (!urlOrId(url)) return 'Error: Invalid video URL/id';
+  const info = await ytdl.getBasicInfo(url);
+  console.log(info.videoDetails);
+
+  const { title } = info.videoDetails;
 };
 
 export const getFormats = async (url: string, typeOf: ytdl.Filter) => {
