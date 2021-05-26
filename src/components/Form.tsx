@@ -104,7 +104,7 @@ const Form = () => {
     setItag('');
   };
 
-  const handleDownload = (type = 'highestaudioandvideo') => {
+  const handleDownload = (type: string) => {
     console.log(`${type} download`);
     setTypeOfDownload(type);
     setIsWorking(true);
@@ -159,7 +159,7 @@ const Form = () => {
           <button
             type="button"
             id="downloadDefault"
-            onClick={handleDownload}
+            onClick={() => handleDownload('highestaudioandvideo')}
             disabled={isDownloading}
           >
             highest audio and video
@@ -205,7 +205,7 @@ const Form = () => {
           className={`hide${useDefault.toString().toUpperCase()}`}
           style={{
             width: '100%',
-            height: qualityDimensions.height,
+            height: (qualityDimensions.height - 33),
           }}
         />
         <QualitySection

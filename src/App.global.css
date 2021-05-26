@@ -229,7 +229,7 @@ button {
 .imgSection img {
   border: 5px solid black;
 }
-/* 
+/*
 .detailsSection {
   display: flex;
   flex-direction: column;
@@ -344,3 +344,7 @@ button {
 }
 
 /* END MESSAGE BOX */
+
+.downloadProgress {
+  margin-top: 10px;
+}

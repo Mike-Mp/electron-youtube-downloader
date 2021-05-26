@@ -21,7 +21,7 @@ module.exports = (api) => {
   return {
     presets: [
       // @babel/preset-env will automatically target our browserslist targets
-      require('@babel/preset-env'),
+      [require('@babel/preset-env'), { loose: true }],
       require('@babel/preset-typescript'),
       [require('@babel/preset-react'), { development }],
     ],
@@ -32,7 +32,7 @@ module.exports = (api) => {
       // Stage 1
       require('@babel/plugin-proposal-export-default-from'),
       require('@babel/plugin-proposal-logical-assignment-operators'),
-      [require('@babel/plugin-proposal-optional-chaining'), { loose: false }],
+      [require('@babel/plugin-proposal-optional-chaining'), { loose: true }],
       [
         require('@babel/plugin-proposal-pipeline-operator'),
         { proposal: 'minimal' },

@@ -16,9 +16,6 @@ const defaultDownload = async (url, type) => {
     video: { downloaded: 0, total: Infinity },
   };
 
-  let audio;
-  let video;
-
   const title = await (await ytdl.getBasicInfo(url)).videoDetails.title;
 
   // eslint-disable-next-line no-useless-escape
@@ -28,6 +25,9 @@ const defaultDownload = async (url, type) => {
 
   let commandList;
   let extension;
+
+  let audio;
+  let video;
 
   if (type === 'highestaudioandvideo') {
     audio = ytdl(url, { quality: 'highestaudio' }).on(
