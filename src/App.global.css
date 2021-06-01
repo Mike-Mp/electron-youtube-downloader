@@ -150,21 +150,16 @@ form button:hover {
   background-color: white;
 }
 
-.topSection {
-  display: flex;
-  flex-direction: column;
-}
-
 .inputSubsection {
   margin-top: 20px;
   margin-bottom: 10px;
   display: flex;
-  align-items: flex-start;
-  /* width: 70%; */
+  flex-direction: row;
 }
 
 .inputSubsection h3 {
   border-right: 1px solid white;
+  /* margin-top: 10px; */
   margin-right: 10px;
   padding-right: 10px;
 }

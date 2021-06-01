@@ -3,7 +3,7 @@ import React from 'react';
 const Instructions = () => {
   return (
     <div className="top">
-      <h2>Info</h2>
+      <h2>Info - under construction</h2>
       <p>
         The youtube-dl package allows you to download video/audio or extract
         subtitles and data from the youtube video.

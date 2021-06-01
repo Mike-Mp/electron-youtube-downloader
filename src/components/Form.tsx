@@ -143,7 +143,6 @@ const Form = () => {
   return (
     <form>
       <MsgBox message={message} />
-      <div className="topSection">
         <div className="inputSubsection">
           <h3>Downloader</h3>
           <label htmlFor="url" id="urlLabel">
@@ -189,7 +188,6 @@ const Form = () => {
             Get video metadata
           </button>
         </div>
-      </div>
       <div className="useSpecific">
         <label htmlFor="checkbox">Use defaults</label>
         <input
