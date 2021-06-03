@@ -12,14 +12,12 @@ import { radioStyles } from '../css/makeStyles';
 
 const QualitySection = ({
   getQualityData,
-  useDefault,
   optionSection,
   setFormatType,
   handleItagChange,
   handleChosenFormatDownload,
 }: {
   getQualityData: IndexProps['getQualityData'];
-  useDefault: boolean;
   optionSection: any;
   setFormatType: IndexProps['setFormatType'];
   handleItagChange: (
@@ -70,12 +68,11 @@ const QualitySection = ({
       </div>
 
       <div className="secondSection">
-        <button type="button" onClick={getQualityData} disabled={useDefault}>
+        <button type="button" onClick={getQualityData}>
           Get available quality formats
         </button>
         <div className="selectDownload">
           <Select
-            disabled={!useDefault}
             options={optionSection}
             value={optionValue}
             defaultValue={{ value: 0, label: 'Get data first' }}

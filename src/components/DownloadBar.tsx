@@ -22,7 +22,7 @@ const DownloadBar = React.memo(function DownloadBar({
   setMessage: React.Dispatch<React.SetStateAction<string>>;
   typeOfDownload: string;
   itag: string;
-  formatType: React.Dispatch<React.SetStateAction<IndexProps['formatType']>>;
+  formatType: IndexProps['formatType'];
 }) {
   const [downloadProgress, setDownloadProgress] = React.useState({
     start: Date.now(),

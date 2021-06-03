@@ -4,6 +4,8 @@ const cp = require('child_process');
 const { ipcRenderer } = require('electron');
 const ffmpeg = require('ffmpeg-static');
 
+const { audioCommands, videoCommands } = require('./commandArrays');
+
 const userDownload = async (url, itag, formatType) => {
   const tracker = {
     start: Date.now(),
@@ -26,13 +28,17 @@ const userDownload = async (url, itag, formatType) => {
   console.log(sanitizedTitle);
 
   let output;
+  let commandList;
+  let data;
 
   const info = await ytdl.getInfo(url);
   const formats = ytdl
     .filterFormats(info.formats, formatType)
     .filter((format) => format.itag === itag);
 
-  const extension = formats.container;
+  const chosenFormat = formats[0];
+
+  const extension = chosenFormat.container;
 
   if (process.env.HOME && process.env.HOME.length > 0) {
     output = `${process.env.HOME}/Downloads/${sanitizedTitle}.${extension}`;
@@ -42,11 +48,26 @@ const userDownload = async (url, itag, formatType) => {
     output = `${title}.${extension}`;
   }
 
-  const data = await ytdl
-    .downloadFromInfo(url, { quality: itag })
-    .on('progress', (_, downloaded, total) => {
-      tracker.audio = { downloaded, total };
-    });
+  if (formatType === 'audioonly') {
+    commandList = audioCommands;
+
+    commandList.push(output);
+
+    data = await ytdl
+      .downloadFromInfo(url, { quality: itag })
+      .on('progress', (_, downloaded, total) => {
+        tracker.audio = { downloaded, total };
+      });
+  } else {
+    commandList = videoCommands;
+    commandList.push(output);
+
+    data = await ytdl
+      .downloadFromInfo(url, { quality: itag })
+      .on('progress', (_, downloaded, total) => {
+        tracker.video = { downloaded, total };
+      });
+  }
 
   const ffmpegProcess = cp.spawn(ffmpeg, commandList, {
     windowsHide: true,
@@ -68,6 +89,8 @@ const userDownload = async (url, itag, formatType) => {
       progressbarHandle = setInterval(sendProgress, progressbarInterval);
     }
   });
+
+  data.pipe(ffmpegProcess.stdio[4]);
 };
 
 export default userDownload;

@@ -3,7 +3,6 @@ import React from 'react';
 import {
   getVideoDetails,
   getFormats,
-  chosenDownload,
 } from '../ytdl_functions/videoDataFunctions';
 
 import optionFiller from '../ytdl_functions/optionFiller';
@@ -25,7 +24,6 @@ declare global {
 }
 
 const Form = () => {
-  const [useDefault, setUseDefault] = React.useState<boolean>(true);
   const [isDownloading, setIsDownloading] = React.useState<boolean>(false);
   const [isWorking, setIsWorking] = React.useState<boolean>(false);
 
@@ -72,13 +70,6 @@ const Form = () => {
       return;
     }
     setQualityData({ data, typeOfData: formatType });
-  };
-
-  const userChosenFormat = async () => {
-    if (itag.length === 0) {
-      setMessage('Please choose a format');
-      setTimeout(() => setMessage(''), 3000);
-    }
   };
 
   const handleItagChange = (e: { label: string; value: number } | null) => {
@@ -187,7 +178,6 @@ const Form = () => {
       <fieldset id="vidSelector">
         <QualitySection
           getQualityData={getQualityData}
-          useDefault={useDefault}
           optionSection={optionSection}
           setFormatType={setFormatType}
           handleItagChange={handleItagChange}
