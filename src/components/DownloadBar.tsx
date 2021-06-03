@@ -1,26 +1,28 @@
 import React from 'react';
 
 import { ipcRenderer } from '../appRuntime';
-import audioDownload from '../ytdl_functions/audioOrVideoDownload';
+import { IndexProps } from '../interfaces/interface';
 import defaultDownload from '../ytdl_functions/defaultDownload';
 import { getTitle } from '../ytdl_functions/videoDataFunctions';
 
 const DownloadBar = React.memo(function DownloadBar({
-  isDownloading,
   setIsDownloading,
   isWorking = false,
   setIsWorking,
   url,
   setMessage,
   typeOfDownload,
+  itag,
+  formatType,
 }: {
-  isDownloading: boolean;
   setIsDownloading: React.Dispatch<React.SetStateAction<boolean>>;
   isWorking: boolean;
   setIsWorking: React.Dispatch<React.SetStateAction<boolean>>;
   url: string;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
   typeOfDownload: string;
+  itag: string;
+  formatType: React.Dispatch<React.SetStateAction<IndexProps['formatType']>>;
 }) {
   const [downloadProgress, setDownloadProgress] = React.useState({
     start: Date.now(),
@@ -38,10 +40,7 @@ const DownloadBar = React.memo(function DownloadBar({
 
   const [title, setTitle] = React.useState<string>('');
 
-  const beginProcess = async () => {
-    console.log('download started');
-    setIsDownloading(true);
-
+  const checkVideoTitle = async () => {
     const updatedTitle = await getTitle(url);
 
     if (updatedTitle.startsWith('Error:')) {
@@ -51,6 +50,26 @@ const DownloadBar = React.memo(function DownloadBar({
     }
 
     setTitle(updatedTitle);
+  };
+
+  const beginUserChosenFormatDownload = async () => {
+    console.log('download started');
+    setIsDownloading(true);
+
+    checkVideoTitle();
+
+
+  };
+
+  const beginProcess = async () => {
+    console.log('download started');
+    setIsDownloading(true);
+
+    checkVideoTitle();
+
+    if (typeOfDownload === '') {
+      beginUserChosenFormatDownload();
+    }
 
     defaultDownload(url, typeOfDownload);
   };
@@ -61,8 +80,6 @@ const DownloadBar = React.memo(function DownloadBar({
     video: { downloaded: number; total: number };
   }) => {
     const toMb = (i: number) => (i / 1024 / 1024).toFixed(2);
-
-    console.log('progress update');
 
     const newProgress = {
       start: args.start,
@@ -89,24 +106,9 @@ const DownloadBar = React.memo(function DownloadBar({
     setTimeout(() => setMessage(''), 10000);
     setIsDownloading(false);
     setProcessFinished(true);
-
-    // setTimeout(() => {
-    //   const emptyProgress = {
-    //     start: Date.now(),
-    //     audio: {
-    //       downloaded: '',
-    //       total: '',
-    //     },
-    //     video: {
-    //       downloaded: '',
-    //       video: '',
-    //     },
-    //   };
-    // }, 5000);
   };
 
   ipcRenderer.on('send_data_to_renderer', (_, args) => {
-    console.log('SEND_DATA_TO_RENDERER');
     updateProgress(args);
   });
 

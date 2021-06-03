@@ -85,10 +85,3 @@ export const getFormats = async (url: string, typeOf: ytdl.Filter) => {
 
   return resolvedFormat;
 };
-
-export const chosenDownload = async (
-  url: string,
-  itag: string,
-  formatType: ytdl.Filter,
-  filePaths: string[]
-) => {};

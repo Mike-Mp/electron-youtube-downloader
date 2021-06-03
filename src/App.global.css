@@ -132,10 +132,6 @@ p {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-/* form:not(#select) {
-  color: white;
-} */
-
 form input {
   color: black;
 }
@@ -164,6 +160,10 @@ form button:hover {
   padding-right: 10px;
 }
 
+#urlLabel {
+  font-size: 2.3rem;
+}
+
 .inputSubsection input {
   margin-left: 10px;
   margin-right: 10px;
@@ -186,12 +186,7 @@ button {
   transform: translateY(39%);
 }
 
-#urlLabel {
-  /* position: relative;
-  top: -30%;
-  left: 35%; */
-  font-size: 2.3rem;
-}
+
 
 #url {
   width: 30%;
@@ -252,7 +247,12 @@ button {
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding-bottom: 20px;
   /* justify-content: flex-start; */
+}
+
+#vidSelector {
+  border-top: 1px solid rgb(184, 184, 184);
 }
 
 .qualitySection legend {

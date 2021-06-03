@@ -8,17 +8,10 @@ const urlThree = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
 
 const downloadVideo = async () => {
   const info = await ytdl.getInfo(urlThree);
-  const formats = ytdl.filterFormats(info.formats, 'videoonly');
+  const formats = ytdl
+    .filterFormats(info.formats, 'audio')
+    .filter((format) => format.itag === 18);
   console.log(formats);
-  // const format = await ytdl.chooseFormat(info.formats, { quality: 18 });
-  // console.log(format);
-  // ytdl
-  //   .downloadFromInfo(info, { quality: format.itag })
-  //   .pipe(
-  //     fs.createWriteStream(
-  //       `${process.env.HOME}/Downloads/BRAP/brap.${format.container}`
-  //     )
-  //   );
 };
 
 downloadVideo();

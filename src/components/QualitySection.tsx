@@ -11,14 +11,13 @@ import selectStyles from '../css/selectStyles';
 import { radioStyles } from '../css/makeStyles';
 
 const QualitySection = ({
-  dimensionsRef,
   getQualityData,
   useDefault,
   optionSection,
   setFormatType,
   handleItagChange,
+  handleChosenFormatDownload,
 }: {
-  dimensionsRef: React.RefObject<HTMLHeadingElement>;
   getQualityData: IndexProps['getQualityData'];
   useDefault: boolean;
   optionSection: any;
@@ -29,6 +28,7 @@ const QualitySection = ({
       value: number;
     } | null
   ) => any;
+  handleChosenFormatDownload: () => void;
 }) => {
   const classes = radioStyles();
 
@@ -44,11 +44,7 @@ const QualitySection = ({
   };
 
   return (
-    <div
-      className="qualitySection"
-      ref={dimensionsRef}
-      style={{ width: '100%', paddingBottom: '20px' }}
-    >
+    <div className="qualitySection">
       <div className="radioGroup">
         <legend>Choose format</legend>
         <RadioGroup
@@ -56,13 +52,6 @@ const QualitySection = ({
           name="typeFormat"
           onChange={handleOnChange}
         >
-          <FormControlLabel
-            value="videoandaudio"
-            aria-label="video and audio"
-            control={<Radio color="default" classes={{ root: classes.root }} />}
-            label="Video and Audio"
-            classes={{ label: classes.label }}
-          />
           <FormControlLabel
             value="videoonly"
             aria-label="video only"
@@ -92,16 +81,12 @@ const QualitySection = ({
             defaultValue={{ value: 0, label: 'Get data first' }}
             styles={selectStyles}
             className="customSelect"
-            onChange={(e) => {
+            onChange={(e: { value: number; label: string } | null) => {
               handleItagChange(e);
               handleSelectChange(e);
             }}
           />
-          <button
-            type="button"
-            disabled={false}
-            onClick={() => console.log('disabled?')}
-          >
+          <button type="button" onClick={() => handleChosenFormatDownload()}>
             Download
           </button>
         </div>

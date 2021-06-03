@@ -15,7 +15,7 @@ import DownloadBar from './DownloadBar';
 
 import { IndexProps, OptionType } from '../interfaces/interface';
 
-import '../css/select_styling.css';
+// import '../css/select_styling.css';
 
 declare global {
   interface Window {
@@ -48,21 +48,6 @@ const Form = () => {
   });
 
   const [itag, setItag] = React.useState('');
-
-  const dimensionsRef = React.useRef<HTMLHeadingElement>(null);
-  const [qualityDimensions, setQualityDimensions] = React.useState({
-    width: 0,
-    height: 0,
-  });
-
-  React.useEffect(() => {
-    if (dimensionsRef.current) {
-      setQualityDimensions({
-        width: dimensionsRef.current.getBoundingClientRect().width,
-        height: dimensionsRef.current.getBoundingClientRect().height,
-      });
-    }
-  }, []);
 
   const checkIfDownloadInProgress = () => {
     if (isDownloading) {
@@ -110,9 +95,10 @@ const Form = () => {
     setIsWorking(true);
   };
 
-  const handleUseDefault = () => {
-    setUseDefault(!useDefault);
-  };
+  const handleChosenFormatDownload = () => {
+    console.log(`${itag}: itag`);
+    setIsWorking(true);
+  }
 
   const getDetails = async () => {
     if (checkIfDownloadInProgress()) return;
@@ -188,7 +174,7 @@ const Form = () => {
             Get video metadata
           </button>
         </div>
-      <div className="useSpecific">
+      {/* <div className="useSpecific">
         <label htmlFor="checkbox">Use defaults</label>
         <input
           type="checkbox"
@@ -197,32 +183,26 @@ const Form = () => {
           onChange={handleUseDefault}
           disabled={isDownloading}
         />
-      </div>
+      </div> */}
       <fieldset id="vidSelector">
-        <div
-          className={`hide${useDefault.toString().toUpperCase()}`}
-          style={{
-            width: '100%',
-            height: (qualityDimensions.height - 33),
-          }}
-        />
         <QualitySection
-          dimensionsRef={dimensionsRef}
           getQualityData={getQualityData}
           useDefault={useDefault}
           optionSection={optionSection}
           setFormatType={setFormatType}
           handleItagChange={handleItagChange}
+          handleChosenFormatDownload={handleChosenFormatDownload}
         />
       </fieldset>
       <DownloadBar
         url={videoURL}
-        isDownloading={isDownloading}
         setIsDownloading={setIsDownloading}
         isWorking={isWorking}
         setIsWorking={setIsWorking}
         setMessage={setMessage}
         typeOfDownload={typeOfDownload}
+        formatType={formatType}
+        itag={itag}
       />
       <VideoDetails videoData={videoData} />
     </form>

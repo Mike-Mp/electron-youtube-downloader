@@ -7,7 +7,7 @@ const optionFiller = (data: ytdl.videoFormat[], typeOfData: ytdl.Filter) => {
     data.map((format) => {
       return optionSection.push({
         value: format.itag,
-        label: `${format.qualityLabel} || ${format.container} || ${format.fps}FPS || ${format.audioSampleRate}kHz || itag: ${format.itag}`,
+        label: `${format.qualityLabel} || ${format.container} || ${format.fps}FPS || ${format.audioSampleRate}Hz || itag: ${format.itag}`,
       });
     });
   } else if (typeOfData === 'videoonly') {
@@ -21,7 +21,7 @@ const optionFiller = (data: ytdl.videoFormat[], typeOfData: ytdl.Filter) => {
     data.map((format) => {
       return optionSection.push({
         value: format.itag,
-        label: `${format.audioSampleRate}kHz || ${format.container} || itag: ${format.itag}`,
+        label: `${format.audioSampleRate}Hz || ${format.container} || itag: ${format.itag}`,
       });
     });
   }
