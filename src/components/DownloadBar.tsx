@@ -11,7 +11,6 @@ const DownloadBar = React.memo(function DownloadBar({
   setIsWorking,
   url,
   setMessage,
-  typeOfDownload,
   itag,
   formatType,
 }: {
@@ -20,7 +19,6 @@ const DownloadBar = React.memo(function DownloadBar({
   setIsWorking: React.Dispatch<React.SetStateAction<boolean>>;
   url: string;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
-  typeOfDownload: string;
   itag: string;
   formatType: IndexProps['formatType'];
 }) {
@@ -39,40 +37,6 @@ const DownloadBar = React.memo(function DownloadBar({
   const [processFinished, setProcessFinished] = React.useState<boolean>(false);
 
   const [title, setTitle] = React.useState<string>('');
-
-  const checkVideoTitle = async () => {
-    const updatedTitle = await getTitle(url);
-
-    if (updatedTitle.startsWith('Error:')) {
-      setMessage(updatedTitle);
-      setTimeout(() => setMessage(''), 5000);
-      return;
-    }
-
-    setTitle(updatedTitle);
-  };
-
-  const beginUserChosenFormatDownload = async () => {
-    console.log('download started');
-    setIsDownloading(true);
-
-    checkVideoTitle();
-
-
-  };
-
-  const beginProcess = async () => {
-    console.log('download started');
-    setIsDownloading(true);
-
-    checkVideoTitle();
-
-    if (typeOfDownload === '') {
-      beginUserChosenFormatDownload();
-    }
-
-    defaultDownload(url, typeOfDownload);
-  };
 
   const updateProgress = (args: {
     start: any;
@@ -108,14 +72,73 @@ const DownloadBar = React.memo(function DownloadBar({
     setProcessFinished(true);
   };
 
-  ipcRenderer.on('send_data_to_renderer', (_, args) => {
-    updateProgress(args);
+  React.useEffect(() => {
+    console.log('useEffect');
+    ipcRenderer.on('send_data_to_renderer', (_, args) => {
+      console.log('UPDATE PROGRESS');
+      updateProgress(args);
+    });
+
+    ipcRenderer.once('mark_complete', (_, args) => {
+      console.log('MARK_COMPLETE');
+      finishDownload(args);
+    });
+
+    return () => {
+      ipcRenderer.removeListener('send_data_to_renderer', () => {
+        console.log('listener removed');
+      });
+
+      ipcRenderer.removeListener('mark_complete', () => {
+        console.log('listener removed');
+      });
+    };
   });
 
-  ipcRenderer.on('mark_complete', (_, args) => {
-    console.log('MARK_COMPLETE');
-    finishDownload(args);
-  });
+  const checkVideoTitle = async () => {
+    const updatedTitle = await getTitle(url);
+
+    if (updatedTitle.startsWith('Error:')) {
+      setMessage(updatedTitle);
+      setTimeout(() => setMessage(''), 5000);
+      return;
+    }
+
+    setTitle(updatedTitle);
+  };
+
+  const beginProcess = async () => {
+    console.log('download started');
+
+    setMessage('Info: Download started');
+    setTimeout(() => setMessage(''), 5000);
+
+    setIsDownloading(true);
+
+    checkVideoTitle();
+
+    defaultDownload(url, itag, formatType);
+  };
+
+  const resetTab = () => {
+    setDownloadProgress({
+      start: Date.now(),
+      audio: {
+        downloaded: '',
+        total: '',
+      },
+      video: {
+        downloaded: '',
+        total: '',
+      },
+    });
+
+    setTitle('');
+
+    setProcessFinished(false);
+
+    setIsWorking(false);
+  };
 
   if (!isWorking) return null;
 
@@ -124,7 +147,7 @@ const DownloadBar = React.memo(function DownloadBar({
   if (isWorking) {
     return (
       <div className="downloadProgress">
-        <p>{title}</p>
+        <p>{title === '' ? 'Title' : title}</p>
         <p>{isComplete}</p>
         <h6>Audio</h6>
         <p>
@@ -139,8 +162,8 @@ const DownloadBar = React.memo(function DownloadBar({
         <button type="button" onClick={beginProcess}>
           Download and write to disk
         </button>
-        <button type="button" onClick={() => setIsWorking(false)}>
-          Close tab
+        <button type="button" onClick={resetTab}>
+          Reset tab
         </button>
       </div>
     );

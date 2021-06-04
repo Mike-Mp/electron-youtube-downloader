@@ -1,3 +1,5 @@
+import decideCorrectDownloadType from './userChosenFormatDownload';
+
 const ffmpeg = require('ffmpeg-static');
 
 const ytdl = require('ytdl-core');
@@ -9,12 +11,14 @@ const {
   videoCommands,
 } = require('./commandArrays');
 
-const defaultDownload = async (url, type) => {
+const defaultDownload = async (url, itag, type) => {
   const tracker = {
     start: Date.now(),
     audio: { downloaded: 0, total: Infinity },
     video: { downloaded: 0, total: Infinity },
   };
+
+  console.log(itag, type);
 
   const title = await (await ytdl.getBasicInfo(url)).videoDetails.title;
 
@@ -23,49 +27,85 @@ const defaultDownload = async (url, type) => {
 
   console.log(sanitizedTitle);
 
-  let commandList;
-  let extension;
+  const { commandList, extension, audio, video, data } =
+    await decideCorrectDownloadType(url, itag, type, tracker);
 
-  let audio;
-  let video;
+  // let commandList;
+  // let extension;
 
-  if (type === 'highestaudioandvideo') {
-    audio = ytdl(url, { quality: 'highestaudio' }).on(
-      'progress',
-      (_, downloaded, total) => {
-        tracker.audio = { downloaded, total };
-      }
-    );
-    video = ytdl(url, { quality: 'highestvideo' }).on(
-      'progress',
-      (_, downloaded, total) => {
-        tracker.video = { downloaded, total };
-      }
-    );
+  // let audio;
+  // let video;
+  // let data;
 
-    extension = 'mp4';
-    commandList = audioAndVideoCommands;
-  } else if (type === 'highestaudio') {
-    audio = ytdl(url, { quality: 'highestaudio' }).on(
-      'progress',
-      (_, downloaded, total) => {
-        tracker.audio = { downloaded, total };
-      }
-    );
+  // if (type === 'highestaudioandvideo') {
+  //   audio = ytdl(url, { quality: 'highestaudio' }).on(
+  //     'progress',
+  //     (_, downloaded, total) => {
+  //       tracker.audio = { downloaded, total };
+  //     }
+  //   );
+  //   video = ytdl(url, { quality: 'highestvideo' }).on(
+  //     'progress',
+  //     (_, downloaded, total) => {
+  //       tracker.video = { downloaded, total };
+  //     }
+  //   );
 
-    extension = 'mp3';
-    commandList = audioCommands;
-  } else {
-    video = ytdl(url, { quality: 'highestvideo' }).on(
-      'progress',
-      (_, downloaded, total) => {
-        tracker.video = { downloaded, total };
-      }
-    );
+  //   extension = 'mp4';
+  //   commandList = audioAndVideoCommands;
+  // } else if (type === 'highestaudio') {
+  //   data = ytdl(url, { quality: 'highestaudio' }).on(
+  //     'progress',
+  //     (_, downloaded, total) => {
+  //       tracker.audio = { downloaded, total };
+  //     }
+  //   );
 
-    extension = 'mp4';
-    commandList = videoCommands;
-  }
+  //   extension = 'mp3';
+  //   commandList = audioCommands;
+  // } else if (type === 'audioonly') {
+  //   const info = await ytdl.getInfo(url);
+  //   const formats = ytdl
+  //     .filterFormats(info.formats, type)
+  //     .filter((format) => format.itag === Number(itag));
+
+  //   extension = formats[0].container;
+  //   commandList = audioCommands;
+
+  //   data = await ytdl(url, { quality: itag }).on(
+  //     'progress',
+  //     (_, downloaded, total) => {
+  //       tracker.audio = { downloaded, total };
+  //       tracker.video = { downloaded: 0, total: 0 };
+  //     }
+  //   );
+  // } else if (type === 'videoonly') {
+  //   const info = await ytdl.getInfo(url);
+  //   const formats = ytdl
+  //     .filterFormats(info.formats, type)
+  //     .filter((format) => format.itag === Number(itag));
+
+  //   extension = formats[0].container;
+  //   commandList = videoCommands;
+
+  //   data = await ytdl(url, { quality: itag }).on(
+  //     'progress',
+  //     (_, downloaded, total) => {
+  //       tracker.video = { downloaded, total };
+  //       tracker.audio = { downloaded: 0, total: 0 };
+  //     }
+  //   );
+  // } else {
+  //   data = ytdl(url, { quality: 'highestvideo' }).on(
+  //     'progress',
+  //     (_, downloaded, total) => {
+  //       tracker.video = { downloaded, total };
+  //     }
+  //   );
+
+  //   extension = 'mp4';
+  //   commandList = videoCommands;
+  // }
 
   // Prepare the progress bar
   let progressbarHandle = null;
@@ -126,10 +166,8 @@ const defaultDownload = async (url, type) => {
   if (type === 'highestaudioandvideo') {
     audio.pipe(ffmpegProcess.stdio[4]);
     video.pipe(ffmpegProcess.stdio[5]);
-  } else if (type === 'highestaudio') {
-    audio.pipe(ffmpegProcess.stdio[4]);
   } else {
-    video.pipe(ffmpegProcess.stdio[4]);
+    data.pipe(ffmpegProcess.stdio[4]);
   }
 };
 

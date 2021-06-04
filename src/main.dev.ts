@@ -16,7 +16,6 @@ import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
-import startDownload from './ytdl_functions/defaultDownload';
 
 process.traceProcessWarnings = true;
 
@@ -24,7 +23,7 @@ ipcMain.on('send_data_to_main', (event, arg) => {
   event.reply('send_data_to_renderer', arg);
 });
 
-ipcMain.on('process_finished', (event, arg) => {
+ipcMain.once('process_finished', (event, arg) => {
   event.reply('mark_complete', arg);
 });
 

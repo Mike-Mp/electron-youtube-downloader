@@ -1,96 +1,89 @@
-import ytdl from 'ytdl-core';
+const ytdl = require('ytdl-core');
+const {
+  audioAndVideoCommands,
+  audioCommands,
+  videoCommands,
+} = require('./commandArrays');
 
-const cp = require('child_process');
-const { ipcRenderer } = require('electron');
-const ffmpeg = require('ffmpeg-static');
-
-const { audioCommands, videoCommands } = require('./commandArrays');
-
-const userDownload = async (url, itag, formatType) => {
-  const tracker = {
-    start: Date.now(),
-    audio: { downloaded: 0, total: Infinity },
-    video: { downloaded: 0, total: Infinity },
-  };
-
-  let progressbarHandle = null;
-  const progressbarInterval = 30000;
-  const sendProgress = () => {
-    tracker.start = ((Date.now() - tracker.start) / 1000 / 60).toFixed(2);
-    console.log('send progress');
-    ipcRenderer.send('send_data_to_main', tracker);
-  };
-
-  const title = await (await ytdl.getBasicInfo(url)).videoDetails.title;
-
-  const sanitizedTitle = title.replace(/([!?,.\/])/g, ' ');
-
-  console.log(sanitizedTitle);
-
-  let output;
+const decideCorrectDownloadType = async (url, itag, type, tracker) => {
   let commandList;
+  let extension;
+
+  let audio;
+  let video;
   let data;
 
-  const info = await ytdl.getInfo(url);
-  const formats = ytdl
-    .filterFormats(info.formats, formatType)
-    .filter((format) => format.itag === itag);
+  if (type === 'highestaudioandvideo') {
+    audio = ytdl(url, { quality: 'highestaudio' }).on(
+      'progress',
+      (_, downloaded, total) => {
+        tracker.audio = { downloaded, total };
+      }
+    );
+    video = ytdl(url, { quality: 'highestvideo' }).on(
+      'progress',
+      (_, downloaded, total) => {
+        tracker.video = { downloaded, total };
+      }
+    );
 
-  const chosenFormat = formats[0];
+    extension = 'mp4';
+    commandList = audioAndVideoCommands;
+  } else if (type === 'highestaudio') {
+    data = ytdl(url, { quality: 'highestaudio' }).on(
+      'progress',
+      (_, downloaded, total) => {
+        tracker.audio = { downloaded, total };
+      }
+    );
 
-  const extension = chosenFormat.container;
+    extension = 'mp3';
+    commandList = audioCommands;
+  } else if (type === 'audioonly') {
+    const info = await ytdl.getInfo(url);
+    const formats = ytdl
+      .filterFormats(info.formats, type)
+      .filter((format) => format.itag === Number(itag));
 
-  if (process.env.HOME && process.env.HOME.length > 0) {
-    output = `${process.env.HOME}/Downloads/${sanitizedTitle}.${extension}`;
-  } else if (process.env.USERPROFILE && process.env.USERPROFILE.length > 0) {
-    output = `${process.env.USERPROFILE}\\Downloads\\${sanitizedTitle}.${extension}`;
-  } else {
-    output = `${title}.${extension}`;
-  }
-
-  if (formatType === 'audioonly') {
+    extension = formats[0].container;
     commandList = audioCommands;
 
-    commandList.push(output);
-
-    data = await ytdl
-      .downloadFromInfo(url, { quality: itag })
-      .on('progress', (_, downloaded, total) => {
+    data = await ytdl(url, { quality: itag }).on(
+      'progress',
+      (_, downloaded, total) => {
         tracker.audio = { downloaded, total };
-      });
-  } else {
-    commandList = videoCommands;
-    commandList.push(output);
+        tracker.video = { downloaded: 0, total: 0 };
+      }
+    );
+  } else if (type === 'videoonly') {
+    const info = await ytdl.getInfo(url);
+    const formats = ytdl
+      .filterFormats(info.formats, type)
+      .filter((format) => format.itag === Number(itag));
 
-    data = await ytdl
-      .downloadFromInfo(url, { quality: itag })
-      .on('progress', (_, downloaded, total) => {
+    extension = formats[0].container;
+    commandList = videoCommands;
+
+    data = await ytdl(url, { quality: itag }).on(
+      'progress',
+      (_, downloaded, total) => {
         tracker.video = { downloaded, total };
-      });
+        tracker.audio = { downloaded: 0, total: 0 };
+      }
+    );
+  } else {
+    data = ytdl(url, { quality: 'highestvideo' }).on(
+      'progress',
+      (_, downloaded, total) => {
+        tracker.video = { downloaded, total };
+      }
+    );
+
+    extension = 'mp4';
+    commandList = videoCommands;
   }
 
-  const ffmpegProcess = cp.spawn(ffmpeg, commandList, {
-    windowsHide: true,
-    stdio: [
-      /* Standard: stdin, stdout, stderr */
-      'inherit',
-      'inherit',
-      'inherit',
-      /* Custom: pipe:3, pipe:4, pipe:5 */
-      'pipe',
-      'pipe',
-      'pipe',
-    ],
-  });
-
-  ffmpegProcess.stdio[3].on('data', () => {
-    // Start the progress bar
-    if (!progressbarHandle) {
-      progressbarHandle = setInterval(sendProgress, progressbarInterval);
-    }
-  });
-
-  data.pipe(ffmpegProcess.stdio[4]);
+  return { commandList, extension, audio, video, data, tracker };
 };
 
-export default userDownload;
+export default decideCorrectDownloadType;

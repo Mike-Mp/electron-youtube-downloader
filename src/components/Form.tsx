@@ -31,11 +31,8 @@ const Form = () => {
 
   const [videoURL, setVideoURL] = React.useState<string>('');
 
-  const [formatType, setFormatType] = React.useState<IndexProps['formatType']>(
-    'videoandaudio'
-  );
-
-  const [typeOfDownload, setTypeOfDownload] = React.useState('');
+  const [formatType, setFormatType] =
+    React.useState<IndexProps['formatType']>('videoandaudio');
 
   const [qualityData, setQualityData] = React.useState<
     IndexProps['qualityData']
@@ -80,16 +77,16 @@ const Form = () => {
     setItag('');
   };
 
-  const handleDownload = (type: string) => {
+  const handleDownload = (type: IndexProps['formatType']) => {
     console.log(`${type} download`);
-    setTypeOfDownload(type);
+    setFormatType(type);
     setIsWorking(true);
   };
 
   const handleChosenFormatDownload = () => {
     console.log(`${itag}: itag`);
     setIsWorking(true);
-  }
+  };
 
   const getDetails = async () => {
     if (checkIfDownloadInProgress()) return;
@@ -120,51 +117,51 @@ const Form = () => {
   return (
     <form>
       <MsgBox message={message} />
-        <div className="inputSubsection">
-          <h3>Downloader</h3>
-          <label htmlFor="url" id="urlLabel">
-            Enter video URL/ID
-          </label>
-          <input
-            type="text"
-            name="url"
-            id="url"
-            disabled={isDownloading}
-            onChange={(e) => setVideoURL(e.target.value)}
-          />
-          <button
-            type="button"
-            id="downloadDefault"
-            onClick={() => handleDownload('highestaudioandvideo')}
-            disabled={isDownloading}
-          >
-            highest audio and video
-          </button>
-          <button
-            type="button"
-            id="downloadDefault"
-            onClick={() => handleDownload('highestaudio')}
-            disabled={isDownloading}
-          >
-            highest audio
-          </button>
-          <button
-            type="button"
-            id="downloadDefault"
-            onClick={() => handleDownload('highestvideo')}
-            disabled={isDownloading}
-          >
-            highest video
-          </button>
-          <button
-            type="button"
-            id="getDetails"
-            onClick={getDetails}
-            disabled={isDownloading}
-          >
-            Get video metadata
-          </button>
-        </div>
+      <div className="inputSubsection">
+        <h3>Downloader</h3>
+        <label htmlFor="url" id="urlLabel">
+          Enter video URL/ID
+        </label>
+        <input
+          type="text"
+          name="url"
+          id="url"
+          disabled={isDownloading}
+          onChange={(e) => setVideoURL(e.target.value)}
+        />
+        <button
+          type="button"
+          id="downloadDefault"
+          onClick={() => handleDownload('highestaudioandvideo')}
+          disabled={isDownloading}
+        >
+          highest audio and video
+        </button>
+        <button
+          type="button"
+          id="downloadDefault"
+          onClick={() => handleDownload('highestaudio')}
+          disabled={isDownloading}
+        >
+          highest audio
+        </button>
+        <button
+          type="button"
+          id="downloadDefault"
+          onClick={() => handleDownload('highestvideo')}
+          disabled={isDownloading}
+        >
+          highest video
+        </button>
+        <button
+          type="button"
+          id="getDetails"
+          onClick={getDetails}
+          disabled={isDownloading}
+        >
+          Get video metadata
+        </button>
+      </div>
       {/* <div className="useSpecific">
         <label htmlFor="checkbox">Use defaults</label>
         <input
@@ -190,7 +187,6 @@ const Form = () => {
         isWorking={isWorking}
         setIsWorking={setIsWorking}
         setMessage={setMessage}
-        typeOfDownload={typeOfDownload}
         formatType={formatType}
         itag={itag}
       />
