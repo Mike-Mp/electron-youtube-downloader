@@ -60,40 +60,39 @@ const DownloadBar = React.memo(function DownloadBar({
     setDownloadProgress(newProgress);
   };
 
-  const finishDownload = (args: {
-    start: any;
-    audio: { downloaded: number; total: number };
-    video: { downloaded: number; total: number };
-  }) => {
-    updateProgress(args);
-    setMessage('Info: Downloading has finished.');
-    setTimeout(() => setMessage(''), 10000);
-    setIsDownloading(false);
-    setProcessFinished(true);
-  };
-
   React.useEffect(() => {
-    console.log('useEffect');
-    ipcRenderer.on('send_data_to_renderer', (_, args) => {
+    const updateListener = (_: any, args: any) => {
       console.log('UPDATE PROGRESS');
       updateProgress(args);
-    });
+    };
 
-    ipcRenderer.once('mark_complete', (_, args) => {
+    const finishDownload = (args: {
+      start: any;
+      audio: { downloaded: number; total: number };
+      video: { downloaded: number; total: number };
+    }) => {
+      updateProgress(args);
+      setMessage('Info: Downloading has finished.');
+      setTimeout(() => setMessage(''), 10000);
+      setIsDownloading(false);
+      setProcessFinished(true);
+    };
+
+    ipcRenderer.on('send_data_to_renderer', updateListener);
+
+    const completeListener = (_: any, args: any) => {
       console.log('MARK_COMPLETE');
       finishDownload(args);
-    });
+    };
+
+    ipcRenderer.on('mark_complete', completeListener);
 
     return () => {
-      ipcRenderer.removeListener('send_data_to_renderer', () => {
-        console.log('listener removed');
-      });
+      ipcRenderer.removeListener('send_data_to_renderer', updateListener);
 
-      ipcRenderer.removeListener('mark_complete', () => {
-        console.log('listener removed');
-      });
+      ipcRenderer.removeListener('mark_complete', completeListener);
     };
-  });
+  }, [downloadProgress, setIsDownloading, setMessage]);
 
   const checkVideoTitle = async () => {
     const updatedTitle = await getTitle(url);

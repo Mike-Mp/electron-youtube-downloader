@@ -60,6 +60,13 @@ const Form = () => {
       setTimeout(() => setMessage(''), 5000);
       return;
     }
+
+    if (formatType !== 'audioonly' && formatType !== 'videoonly') {
+      setMessage('Info: Choose option from checkboxes');
+      setTimeout(() => setMessage(''), 5000);
+      return;
+    }
+
     const data = await getFormats(videoURL, formatType);
     if (data[0].msg) {
       setMessage(data[0].msg);

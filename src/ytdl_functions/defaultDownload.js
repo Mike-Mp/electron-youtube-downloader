@@ -20,7 +20,19 @@ const defaultDownload = async (url, itag, type) => {
 
   console.log(itag, type);
 
-  const title = await (await ytdl.getBasicInfo(url)).videoDetails.title;
+  const info = await ytdl.getBasicInfo(url);
+
+  const { title } = info.videoDetails;
+
+  let progressbarInterval;
+
+  const duration = info.videoDetails.lengthSeconds;
+
+  if (duration >= 4860) {
+    progressbarInterval = 30000;
+  } else {
+    progressbarInterval = 1000;
+  }
 
   // eslint-disable-next-line no-useless-escape
   const sanitizedTitle = title.replace(/([!?,.\/])/g, ' ');
@@ -30,89 +42,12 @@ const defaultDownload = async (url, itag, type) => {
   const { commandList, extension, audio, video, data } =
     await decideCorrectDownloadType(url, itag, type, tracker);
 
-  // let commandList;
-  // let extension;
-
-  // let audio;
-  // let video;
-  // let data;
-
-  // if (type === 'highestaudioandvideo') {
-  //   audio = ytdl(url, { quality: 'highestaudio' }).on(
-  //     'progress',
-  //     (_, downloaded, total) => {
-  //       tracker.audio = { downloaded, total };
-  //     }
-  //   );
-  //   video = ytdl(url, { quality: 'highestvideo' }).on(
-  //     'progress',
-  //     (_, downloaded, total) => {
-  //       tracker.video = { downloaded, total };
-  //     }
-  //   );
-
-  //   extension = 'mp4';
-  //   commandList = audioAndVideoCommands;
-  // } else if (type === 'highestaudio') {
-  //   data = ytdl(url, { quality: 'highestaudio' }).on(
-  //     'progress',
-  //     (_, downloaded, total) => {
-  //       tracker.audio = { downloaded, total };
-  //     }
-  //   );
-
-  //   extension = 'mp3';
-  //   commandList = audioCommands;
-  // } else if (type === 'audioonly') {
-  //   const info = await ytdl.getInfo(url);
-  //   const formats = ytdl
-  //     .filterFormats(info.formats, type)
-  //     .filter((format) => format.itag === Number(itag));
-
-  //   extension = formats[0].container;
-  //   commandList = audioCommands;
-
-  //   data = await ytdl(url, { quality: itag }).on(
-  //     'progress',
-  //     (_, downloaded, total) => {
-  //       tracker.audio = { downloaded, total };
-  //       tracker.video = { downloaded: 0, total: 0 };
-  //     }
-  //   );
-  // } else if (type === 'videoonly') {
-  //   const info = await ytdl.getInfo(url);
-  //   const formats = ytdl
-  //     .filterFormats(info.formats, type)
-  //     .filter((format) => format.itag === Number(itag));
-
-  //   extension = formats[0].container;
-  //   commandList = videoCommands;
-
-  //   data = await ytdl(url, { quality: itag }).on(
-  //     'progress',
-  //     (_, downloaded, total) => {
-  //       tracker.video = { downloaded, total };
-  //       tracker.audio = { downloaded: 0, total: 0 };
-  //     }
-  //   );
-  // } else {
-  //   data = ytdl(url, { quality: 'highestvideo' }).on(
-  //     'progress',
-  //     (_, downloaded, total) => {
-  //       tracker.video = { downloaded, total };
-  //     }
-  //   );
-
-  //   extension = 'mp4';
-  //   commandList = videoCommands;
-  // }
-
   // Prepare the progress bar
   let progressbarHandle = null;
-  const progressbarInterval = 30000;
+  // progressbarInterval = 30000;
   const sendProgress = () => {
     tracker.start = ((Date.now() - tracker.start) / 1000 / 60).toFixed(2);
-    console.log('send progress');
+    // console.log('send progress');
     ipcRenderer.send('send_data_to_main', tracker);
   };
 

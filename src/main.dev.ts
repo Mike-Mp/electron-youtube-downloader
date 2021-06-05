@@ -23,7 +23,8 @@ ipcMain.on('send_data_to_main', (event, arg) => {
   event.reply('send_data_to_renderer', arg);
 });
 
-ipcMain.once('process_finished', (event, arg) => {
+ipcMain.on('process_finished', (event, arg) => {
+  console.log('ipcMain complete');
   event.reply('mark_complete', arg);
 });
 

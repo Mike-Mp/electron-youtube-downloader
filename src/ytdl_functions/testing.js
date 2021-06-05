@@ -38,19 +38,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var ytdl = require("ytdl-core");
 var url = 'https://www.youtube.com/watch?v=KkhGkRahU6g';
-var urlTwo = 'https://www.youtube.com/watch?v=K4lRfZyRD8k';
+var urlTwo = 'https://www.youtube.com/watch?v=rsz1zLzX6k4';
 var urlThree = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
 var downloadVideo = function () { return __awaiter(void 0, void 0, void 0, function () {
     var info, formats;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, ytdl.getInfo(urlThree)];
+            case 0: return [4 /*yield*/, ytdl.getInfo(urlTwo)];
             case 1:
                 info = _a.sent();
+                console.log(info.videoDetails.lengthSeconds);
                 formats = ytdl
                     .filterFormats(info.formats, 'audio')
                     .filter(function (format) { return format.itag === 18; });
-                console.log(formats);
                 return [2 /*return*/];
         }
     });
