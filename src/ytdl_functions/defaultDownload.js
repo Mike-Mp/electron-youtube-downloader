@@ -31,7 +31,7 @@ const defaultDownload = async (url, itag, type) => {
   if (duration >= 4860) {
     progressbarInterval = 30000;
   } else {
-    progressbarInterval = 1000;
+    progressbarInterval = 2000;
   }
 
   // eslint-disable-next-line no-useless-escape
@@ -78,15 +78,17 @@ const defaultDownload = async (url, itag, type) => {
     ],
   });
 
-  ffmpegProcess.on('close', () => {
+  ffmpegProcess.on('close', (code, signal) => {
     console.log('done');
+    if (code) console.log(`Exited with code ${code}`);
+    else if (signal) console.log(`Exited with signal ${signal}`);
     // Cleanup
     clearInterval(progressbarHandle);
     ipcRenderer.send('process_finished', tracker);
   });
 
   ffmpegProcess.on('error', (err) => {
-    console.error(err);
+    console.log(err);
   });
 
   // Link streams

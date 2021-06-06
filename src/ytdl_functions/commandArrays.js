@@ -1,5 +1,7 @@
 export const audioAndVideoCommands = [
   // Remove ffmpeg's console spamming
+  '-threads',
+  '2',
   '-loglevel',
   '8',
   '-hide_banner',
@@ -25,6 +27,8 @@ export const audioAndVideoCommands = [
 
 export const audioCommands = [
   // Remove ffmpeg's console spamming
+  '-threads',
+  '2',
   '-loglevel',
   '8',
   '-hide_banner',
@@ -35,17 +39,19 @@ export const audioCommands = [
   // Map audio & video from streams
   '-i',
   'pipe:4',
-  '-map',
-  '0:a',
+  // '-map',
+  // '0:a',
   // Keep encoding
-  '-c:v',
-  'copy',
+  // '-c:a',
+  // 'copy',
   // Define output file
   '-y',
 ];
 
 export const videoCommands = [
   // Remove ffmpeg's console spamming
+  '-threads',
+  '2',
   '-loglevel',
   '8',
   '-hide_banner',

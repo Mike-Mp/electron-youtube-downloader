@@ -44,6 +44,8 @@ const Form = () => {
 
   const [itag, setItag] = React.useState('');
 
+  const [optionValue, setOptionValue] = React.useState({ value: 0, label: '' });
+
   const checkIfDownloadInProgress = () => {
     if (isDownloading) {
       setMessage('Info: Download in progress');
@@ -181,6 +183,8 @@ const Form = () => {
       </div> */}
       <fieldset id="vidSelector">
         <QualitySection
+          optionValue={optionValue}
+          setOptionValue={setOptionValue}
           getQualityData={getQualityData}
           optionSection={optionSection}
           setFormatType={setFormatType}
@@ -188,8 +192,10 @@ const Form = () => {
           handleChosenFormatDownload={handleChosenFormatDownload}
         />
       </fieldset>
+      <h6>Choice: {formatType}</h6>
       <DownloadBar
         url={videoURL}
+        isDownloading={isDownloading}
         setIsDownloading={setIsDownloading}
         isWorking={isWorking}
         setIsWorking={setIsWorking}

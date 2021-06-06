@@ -16,6 +16,8 @@ const QualitySection = ({
   setFormatType,
   handleItagChange,
   handleChosenFormatDownload,
+  optionValue,
+  setOptionValue,
 }: {
   getQualityData: IndexProps['getQualityData'];
   optionSection: any;
@@ -27,10 +29,18 @@ const QualitySection = ({
     } | null
   ) => any;
   handleChosenFormatDownload: () => void;
+  optionValue: {
+    value: number;
+    label: string;
+  };
+  setOptionValue: React.Dispatch<
+    React.SetStateAction<{
+      value: number;
+      label: string;
+    }>
+  >;
 }) => {
   const classes = radioStyles();
-
-  const [optionValue, setOptionValue] = React.useState({ value: 0, label: '' });
 
   const handleOnChange = (e: any) => {
     setFormatType(e.target.value);
@@ -84,7 +94,7 @@ const QualitySection = ({
             }}
           />
           <button type="button" onClick={() => handleChosenFormatDownload()}>
-            Download
+            Choose
           </button>
         </div>
       </div>

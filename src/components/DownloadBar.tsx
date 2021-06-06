@@ -6,6 +6,7 @@ import defaultDownload from '../ytdl_functions/defaultDownload';
 import { getTitle } from '../ytdl_functions/videoDataFunctions';
 
 const DownloadBar = React.memo(function DownloadBar({
+  isDownloading,
   setIsDownloading,
   isWorking = false,
   setIsWorking,
@@ -14,6 +15,7 @@ const DownloadBar = React.memo(function DownloadBar({
   itag,
   formatType,
 }: {
+  isDownloading: boolean;
   setIsDownloading: React.Dispatch<React.SetStateAction<boolean>>;
   isWorking: boolean;
   setIsWorking: React.Dispatch<React.SetStateAction<boolean>>;
@@ -158,10 +160,10 @@ const DownloadBar = React.memo(function DownloadBar({
           Downloaded {downloadProgress.video.downloaded || '0'}mb out of{' '}
           {downloadProgress.video.total || '0'}mb
         </p>
-        <button type="button" onClick={beginProcess}>
+        <button type="button" onClick={beginProcess} disabled={isDownloading}>
           Download and write to disk
         </button>
-        <button type="button" onClick={resetTab}>
+        <button type="button" onClick={resetTab} disabled={isDownloading}>
           Reset tab
         </button>
       </div>
