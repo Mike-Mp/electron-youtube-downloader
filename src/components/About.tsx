@@ -20,7 +20,7 @@ const About = ({
           <a href="https://github.com/Mike-Mp" target="_blank" rel="noreferrer">
             Mike-Mp{' '}
           </a>
-          with Electron, React and the node-ytdl-core npm package.
+          with Electron, React, ytdl and ffmpeg.
         </p>
         <p>
           <a

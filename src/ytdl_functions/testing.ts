@@ -8,10 +8,10 @@ const urlThree = 'http://www.youtube.com/watch?v=aqz-KE-bpKQ';
 
 const downloadVideo = async () => {
   const info = await ytdl.getInfo(urlTwo);
-  console.log(info.videoDetails.lengthSeconds);
-  const formats = ytdl
-    .filterFormats(info.formats, 'audio')
-    .filter((format) => format.itag === 18);
+
+  const formats = ytdl.chooseFormat(info.formats, { quality: 'highest' });
+
+  console.log(formats);
 };
 
 downloadVideo();

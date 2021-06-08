@@ -47,10 +47,8 @@ var downloadVideo = function () { return __awaiter(void 0, void 0, void 0, funct
             case 0: return [4 /*yield*/, ytdl.getInfo(urlTwo)];
             case 1:
                 info = _a.sent();
-                console.log(info.videoDetails.lengthSeconds);
-                formats = ytdl
-                    .filterFormats(info.formats, 'audio')
-                    .filter(function (format) { return format.itag === 18; });
+                formats = ytdl.chooseFormat(info.formats, { quality: 'highest' });
+                console.log(formats);
                 return [2 /*return*/];
         }
     });

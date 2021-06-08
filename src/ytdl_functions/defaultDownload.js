@@ -1,4 +1,4 @@
-import decideCorrectDownloadType from './userChosenFormatDownload';
+import decideCorrectDownloadType from './decideCorrectDownloadType';
 
 const ffmpeg = require('ffmpeg-static');
 
