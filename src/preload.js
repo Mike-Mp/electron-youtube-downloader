@@ -1,4 +1,5 @@
 const { ipcRenderer } = require('electron');
+const { dialog } = require('electron').remote;
 
 // contextBridge.exposeInMainWorld('appRuntime', {
 //   send: (channel, data) => {
@@ -17,6 +18,7 @@ const { ipcRenderer } = require('electron');
 function init() {
   window.isElectron = true;
   window.ipcRenderer = ipcRenderer;
+  window.dialog = dialog;
 }
 
 init();

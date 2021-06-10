@@ -1,4 +1,7 @@
-import decideCorrectDownloadType from './decideCorrectDownloadType';
+import {
+  decideCorrectDownloadType,
+  getPath,
+} from './downloaderHelperFunctions';
 
 const ffmpeg = require('ffmpeg-static');
 
@@ -11,7 +14,7 @@ const {
   videoCommands,
 } = require('./commandArrays');
 
-const defaultDownload = async (url, itag, type) => {
+const downloader = async (url, itag, type, path) => {
   const tracker = {
     start: Date.now(),
     audio: { downloaded: 0, total: Infinity },
@@ -51,15 +54,7 @@ const defaultDownload = async (url, itag, type) => {
     ipcRenderer.send('send_data_to_main', tracker);
   };
 
-  let output;
-
-  if (process.env.HOME && process.env.HOME.length > 0) {
-    output = `${process.env.HOME}/Downloads/${sanitizedTitle}.${extension}`;
-  } else if (process.env.USERPROFILE && process.env.USERPROFILE.length > 0) {
-    output = `${process.env.USERPROFILE}\\Downloads\\${sanitizedTitle}.${extension}`;
-  } else {
-    output = `${title}.${extension}`;
-  }
+  const output = getPath(path, sanitizedTitle, extension);
 
   commandList.push(output);
 
@@ -108,4 +103,4 @@ const defaultDownload = async (url, itag, type) => {
   }
 };
 
-export default defaultDownload;
+export default downloader;

@@ -13,7 +13,6 @@ import QualitySection from './QualitySection';
 import DownloadBar from './DownloadBar';
 
 import { IndexProps, OptionType } from '../interfaces/interface';
-import { format } from 'prettier';
 
 // import '../css/select_styling.css';
 
@@ -46,6 +45,8 @@ const Form = () => {
   const [itag, setItag] = React.useState('');
 
   const [optionValue, setOptionValue] = React.useState({ value: 0, label: '' });
+
+  const [downloadPath, setDownloadPath] = React.useState('');
 
   const checkIfDownloadInProgress = () => {
     if (isDownloading) {
@@ -118,6 +119,26 @@ const Form = () => {
     }
 
     setVideoData(details);
+  };
+  console.log(downloadPath);
+  const handleDownloadPath = () => {
+    if (downloadPath === '') {
+      if (process.env.HOME && process.env.HOME.length > 0) {
+        setDownloadPath(`${process.env.HOME}/Downloads`);
+        return downloadPath;
+      }
+      setDownloadPath(`${process.env.USERPROFILE}\\Downloads`);
+      return downloadPath;
+    }
+    return downloadPath;
+  };
+
+  const handleChoosePath = async () => {
+    const path = await dialog.showOpenDialog({
+      properties: ['openDirectory'],
+    });
+
+    setDownloadPath(path.filePaths[0]);
   };
 
   let optionSection: { value: any; label: string }[] = [];
@@ -194,7 +215,17 @@ const Form = () => {
           handleChosenFormatDownload={handleChosenFormatDownload}
         />
       </fieldset>
-      <h6>Choice: {formatType}</h6>
+      <div>
+        <h6>Choice: {formatType}</h6>
+        <h6>Download Path: {handleDownloadPath()} </h6>
+        <button
+          type="button"
+          onClick={handleChoosePath}
+          disabled={isDownloading}
+        >
+          Choose path
+        </button>
+      </div>
       <DownloadBar
         url={videoURL}
         isDownloading={isDownloading}
@@ -204,6 +235,7 @@ const Form = () => {
         setMessage={setMessage}
         formatType={formatType}
         itag={itag}
+        downloadPath={downloadPath}
       />
       <VideoDetails videoData={videoData} />
     </form>

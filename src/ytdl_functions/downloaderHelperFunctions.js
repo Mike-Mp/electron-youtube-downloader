@@ -5,7 +5,7 @@ const {
   videoCommands,
 } = require('./commandArrays');
 
-const decideCorrectDownloadType = async (url, itag, type, tracker) => {
+export const decideCorrectDownloadType = async (url, itag, type, tracker) => {
   let commandList;
   let extension;
 
@@ -86,4 +86,13 @@ const decideCorrectDownloadType = async (url, itag, type, tracker) => {
   return { commandList, extension, audio, video, data, tracker };
 };
 
-export default decideCorrectDownloadType;
+export const getPath = (userDefinedPath, title, extension) => {
+  let output;
+  if (process.env.HOME && process.env.HOME.length > 0) {
+    output = `${userDefinedPath}/${title}.${extension}`;
+  } else if (process.env.USERPROFILE && process.env.USERPROFILE.length > 0) {
+    output = `${userDefinedPath}\\${title}.${extension}`;
+  }
+
+  return output;
+};

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ipcRenderer } from '../appRuntime';
 import { IndexProps } from '../interfaces/interface';
-import defaultDownload from '../ytdl_functions/defaultDownload';
+import downloader from '../ytdl_functions/downloader';
 import { getTitle } from '../ytdl_functions/videoDataFunctions';
 
 const DownloadBar = React.memo(function DownloadBar({
@@ -14,6 +14,7 @@ const DownloadBar = React.memo(function DownloadBar({
   setMessage,
   itag,
   formatType,
+  downloadPath,
 }: {
   isDownloading: boolean;
   setIsDownloading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,6 +24,7 @@ const DownloadBar = React.memo(function DownloadBar({
   setMessage: React.Dispatch<React.SetStateAction<string>>;
   itag: string;
   formatType: IndexProps['formatType'];
+  downloadPath: string;
 }) {
   const [downloadProgress, setDownloadProgress] = React.useState({
     start: Date.now(),
@@ -105,6 +107,12 @@ const DownloadBar = React.memo(function DownloadBar({
       return;
     }
 
+    if (!downloadPath) {
+      setMessage('Error: Please choose a download path');
+      setTimeout(() => setMessage(''), 8000);
+      return;
+    }
+
     setTitle(updatedTitle);
   };
 
@@ -118,7 +126,7 @@ const DownloadBar = React.memo(function DownloadBar({
 
     checkVideoTitle();
 
-    defaultDownload(url, itag, formatType);
+    downloader(url, itag, formatType);
   };
 
   const resetTab = () => {
