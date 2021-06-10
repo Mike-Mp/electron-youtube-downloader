@@ -120,7 +120,7 @@ const Form = () => {
 
     setVideoData(details);
   };
-  console.log(downloadPath);
+
   const handleDownloadPath = () => {
     if (downloadPath === '') {
       if (process.env.HOME && process.env.HOME.length > 0) {
@@ -137,6 +137,11 @@ const Form = () => {
     const path = await dialog.showOpenDialog({
       properties: ['openDirectory'],
     });
+    console.log(path.filePaths[0]);
+    if (!path.filePaths[0]) {
+      handleDownloadPath();
+      return;
+    }
 
     setDownloadPath(path.filePaths[0]);
   };

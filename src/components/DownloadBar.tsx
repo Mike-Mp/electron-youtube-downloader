@@ -107,12 +107,6 @@ const DownloadBar = React.memo(function DownloadBar({
       return;
     }
 
-    if (!downloadPath) {
-      setMessage('Error: Please choose a download path');
-      setTimeout(() => setMessage(''), 8000);
-      return;
-    }
-
     setTitle(updatedTitle);
   };
 
